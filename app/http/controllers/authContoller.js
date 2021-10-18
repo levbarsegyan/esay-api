@@ -1,41 +1,36 @@
 import connection from '../../database/connection.js'
+import Joy from 'joi'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 const authController = () => {
+    const client = connection()
+    const validateScheama = Joy.object({
+        fullname:Joy.string().required(),
+        email:Joy.string().email().required(),
+        password:Joy.string().min(8).required(),
+        confirmpassword:Joy.ref('password'),
+    })
     return {
-        register(req, res) {
-            const {fullname,email,password,} = req.body
-            bcrypt.hash(password,10).then(hasedPassword=>{
-                const token = jwt.sign({fullname,email,},process.env.tockensecret,{expiresIn:'1h',})
-                const client = connection()
-                client.query('insert into users (fullname,email,password) values ($1,$2,$3)',[fullname,email,hasedPassword]).then(()=>{
-                    return res.status(200).json({msg:'you are registred successfully..',token,})
-                }).catch((e)=>{
-                    console.log(e)
-                    return res.status(403).json({mag:'something went wrong!!!',})
-                })
-            })
-        },
-        login(req,res) {
-            const {email,password,} = req.body
-            const client = connection()
-            client.query('select * from users where email=$1',[email]).then(data=>{
-                if(data.rowCount>0){
-                    console.log(data)
-                    const incriptPass = data.rows[0].password
-                    bcrypt.compare(password,incriptPass).then(comp=>{
-                        if(comp){
-                            return res.json({msg:'logged in successfully!!!',})
-                        }
-                        else{
-                            return res.json({err:'wrong email or password',})
-                        }
-                    })
+        register:async(req, res)=> {
+            const {fullname,email,password,confirmpassword,} = req.body
+            try {
+                await validateScheama.validateAsync({fullname,email,password,confirmpassword,})
+                const user=await client.query('select * from users where email=$1',[email])
+                if(user.rowCount>0){
+                    return res.status(200).json({msg:'user already exist',})
+                }else{
+                    const hasedPassword =await bcrypt.hash(password,10)
+                    const token = jwt.sign({email,},process.env.tockensecret,{expiresIn:'1H',})
+                    try {
+                        await client.query('insert into users (fullname,email,password) values ($1,$2,$3)',[fullname,email,hasedPassword])
+                        return res.status(200).json({msg:'you are registred successfully..',token,})
+                    } catch (error) {
+                        return res.status(403).json({mag:'something went wrong!!!',})
+                    }
                 }
-                else{
-                    return res.json({msg:'you are not registerd..please register first',})
-                }
-            })
+            } catch (error) {
+                return res.status(400).json({error:error.message,})
+            }
         },
     }
 }
