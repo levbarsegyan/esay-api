@@ -1,6 +1,6 @@
 import Pg from 'pg'
 const {Client,} = Pg
-function connection(){
+async function connection(){
     const client = new Client({
         user:process.env.DbUser,
         host:process.env.DbHost,
@@ -8,7 +8,12 @@ function connection(){
         password:process.env.DbPassword,
         port:process.env.DbPort,
     })
-    client.connect().then(console.log('database connected'))
-    return client
+    try {
+        await client.connect()
+        console.log('database connected')
+        return client
+    } catch (error) {
+        console.log(error)
+    }
 }
 export default connection
