@@ -5,6 +5,9 @@ dotenv.config()
 const app = express()
 app.use(express.urlencoded({ extended: true, }))
 app.use(express.json())
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from './api-docs/swagger.json'
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 initRoutes(app)
 import connection from './app/database/connection.js'
 (async ()=>{
