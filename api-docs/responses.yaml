@@ -1,0 +1,20 @@
+ApiResponse:
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          msg:
+            type: string
+          token:
+            type: string
+ErrorResponse: 
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          msg/err/error:
+            type: string
+      example:
+        Error: some error will be shown here!

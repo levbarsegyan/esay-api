@@ -9,7 +9,7 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "dev": "nodemon --experimental-json-modules server",
+    "dev": "nodemon -e yaml,js,json --experimental-json-modules server",
     "prod": "node server",
     "lint": "eslint ./",
     "postinstall": "husky install",
@@ -31,7 +31,8 @@
     "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^8.5.1",
     "pgtools": "^0.3.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^7.18.0",

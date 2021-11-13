@@ -15,30 +15,17 @@ post:
     content:
       application/json:
         schema:
-          $ref: '#/definitions/LoginForm'
+          $ref: '#/components/schemas/LoginForm'
   responses:
     '200':
       description: successful operation
-      content:
-        application/json:
-          schema:
-            $ref: '#/definitions/ApiResponse'
-          example:
-            msg: logged in successfully!!!
-            token: fodijhsj32432n5lksfdj8w3498275
+      $ref: '#/components/responses/ApiResponse'
+      example:
+        msg: logged in successfully!!!
+        token: fodijhsj32432n5lksfdj8w3498275
     '400':
-      description: Invalid username/password supplied
-      content:
-        application/json:
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-          example:
-            error: some error will be shown here!
+      description: Invalid username/password supplied 
+      $ref: "#/components/responses/ErrorResponse"
     '500':
       description: server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-          example:
-            msg: internal server error
+      $ref: "#/components/responses/ErrorResponse"

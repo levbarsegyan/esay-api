@@ -1,15 +1,25 @@
 openapi: '3.0.0'
-servers:
-- url: http://localhost:5000/api
 tags:
 - name: user
   description: Operations about user
+servers:
+- url: http://127.0.0.1:5000/api
+- url: http://localhost:5000/api
 schemes:
 - https
 - http
 info:
-  $ref: ./info/index.yaml
+  $ref: ./api-docs/info.yaml
 paths:
-  $ref: ./paths/index.yaml
-definitions:
-  $ref: ./definitions/index.yaml
+  /login:
+    $ref: ./api-docs/paths/index.yaml#/login
+  /register:
+    $ref: ./api-docs/paths/index.yaml#/register
+components:
+  responses:
+      $ref: "./api-docs/responses.yaml"
+  schemas:
+    LoginForm:
+      $ref: "./api-docs/schema/index.yaml#/LoginForm"
+    User:
+      $ref: "./api-docs/schema/index.yaml#/User"

@@ -1,4 +1,0 @@
-type: object
-properties:
-  msg/err/error:
-    type: string

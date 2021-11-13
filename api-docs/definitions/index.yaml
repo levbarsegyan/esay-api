@@ -1,8 +1,0 @@
-User:
-  $ref: ./User.yaml
-LoginForm:
-  $ref: ./LoginForm.yaml
-ApiResponse:
-  $ref: ./ApiResponse.yaml
-ErrorResponse:
-  $ref: ./ErrorResponse.yaml
