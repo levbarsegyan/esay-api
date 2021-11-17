@@ -1,8 +1,0 @@
-description: API Documentation Server for Project Management Tool API
-version: '1.0'
-title: Project Management Tool
-contact:
-  email: apiteam@swagger.io
-license:
-  name: Apache 2.0
-  url: http://www.apache.org/licenses/LICENSE-2.0.html

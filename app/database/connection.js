@@ -1,6 +1,6 @@
 import Pg from 'pg'
 const { Client, } = Pg
-async function connection(){
+async function connection() {
     const client = new Client({
         user: process.env.DbUser,
         host: process.env.DbHost,

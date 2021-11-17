@@ -1,4 +1,0 @@
-User:
-  $ref: ./User.yaml
-LoginForm:
-  $ref: ./LoginForm.yaml
