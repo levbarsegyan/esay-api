@@ -9,7 +9,7 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "dev": "nodemon server",
+    "dev": "nodemon -e yaml,js,json --experimental-json-modules server",
     "prod": "node server",
     "lint": "eslint ./",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
@@ -31,18 +31,23 @@
     "eslint-plugin-node": "^11.1.0",
     "express": "^4.17.1",
     "joi": "^17.3.0",
+    "js-yaml": "^4.0.0",
+    "json-refs": "^3.0.15",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
+    "multi-file-swagger": "^2.3.0",
     "nodemailer": "^6.4.17",
     "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^8.5.1",
-    "pgtools": "^0.3.0"
+    "pgtools": "^0.3.0",
+    "swagger-ui-express": "^4.1.6",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "eslint": "^7.18.0",
     "husky": "^5.0.6",
     "jest": "^26.6.3",
     "nodemon": "^2.0.7",
-    "supertest": "6.0.0"
+    "supertest": "6.1.1"
   }
 }

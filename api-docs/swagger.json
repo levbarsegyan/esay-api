@@ -1,0 +1,230 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "description": "API Documentation Server for Project Management Tool API",
+        "version": "1.0",
+        "title": "Project Management Tool",
+        "contact": {
+            "email": "apiteam@swagger.io"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        }
+    },
+    "host": "localhost",
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "user",
+            "description": "Operations about user"
+        }
+    ],
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Logs user into the system",
+                "description": "",
+                "operationId": "loginUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "requestBody": {
+                    "description": "The email and password for login",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/LoginForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/ApiResponse"
+                                },
+                                "example": {
+                                    "msg": "logged in successfully!!!",
+                                    "token": "fodijhsj32432n5lksfdj8w3498275"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/ErrorResponse"
+                                },
+                                "example": {
+                                    "msg": "internal server error"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username/password supplied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/ErrorResponse"
+                                },
+                                "example": {
+                                    "error": "some error will be shown here!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Register New user",
+                "description": "Create new user in database.",
+                "operationId": "registerUser",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "requestBody": {
+                    "description": "Created user object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/definitions/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/ApiResponse"
+                                },
+                                "example": {
+                                    "msg": "you are registred successfully..",
+                                    "token": "fodijhsj32432n5lksfdj8w3498275"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/ErrorResponse"
+                                },
+                                "example": {
+                                    "msg": "something went wrong!!!"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/definitions/ErrorResponse"
+                                },
+                                "example": {
+                                    "error": "some error will be shown here!"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "msg": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "msg/err/error": {
+                    "type": "string"
+                }
+            }
+        },
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "fullname": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "confirmpassword": {
+                    "type": "string"
+                }
+            },
+            "xml": {
+                "name": "User"
+            }
+        },
+        "LoginForm": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "email@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "yourpassword"
+                }
+            },
+            "xml": {
+                "name": "LoginForm"
+            }
+        }
+    }
+}

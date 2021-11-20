@@ -1,0 +1,4 @@
+login:
+  $ref: ./login.yaml
+register:
+  $ref: ./register.yaml

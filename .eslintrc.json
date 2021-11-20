@@ -12,28 +12,51 @@
         "sourceType": "module"
     },
     "rules": {
-       "comma-spacing": ["error", { "before": false, "after": true }],
-       "object-curly-spacing": ["error", "always"],
-       "array-bracket-spacing": ["error", "always"],
-       "computed-property-spacing": ["error", "always"],
-       "space-in-parens": ["error", "never"],
-       "space-infix-ops": ["error"],
-       "no-console": 0,
-       "linebreak-style": 0,
-       "no-irregular-whitespace": 0,
-       "no-undef": 0,
-       "no-param-reassign": [
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "array-bracket-spacing": [
+            "error",
+            "always"
+        ],
+        "computed-property-spacing": [
+            "error",
+            "always"
+        ],
+        "space-in-parens": [
+            "error",
+            "never"
+        ],
+        "space-infix-ops": [
+            "error"
+        ],
+        "no-console": 0,
+        "linebreak-style": 0,
+        "no-irregular-whitespace": 0,
+        "no-undef": 0,
+        "no-param-reassign": [
             "warn"
-       ],
-       "template-curly-spacing": 0,
-       "no-unused-vars": [
+        ],
+        "template-curly-spacing": 0,
+        "no-unused-vars": [
             "error",
             {
                 "args": "none"
             }
         ],
         "max-len": 0,
-        "node/exports-style": ["error", "module.exports"],
+        "node/exports-style": [
+            "error",
+            "module.exports"
+        ],
         "indent": [
             "error",
             4
@@ -46,14 +69,31 @@
             "error",
             "never"
         ],
-        "comma-dangle": ["error", {
-            "arrays": "never",
-            "objects": "always",
-            "imports": "never",
-            "exports": "never",
-            "functions": "never"
-        }],
+        "comma-dangle": [
+            "error",
+            {
+                "arrays": "never",
+                "objects": "always",
+                "imports": "never",
+                "exports": "never",
+                "functions": "never"
+            }
+        ],
         "no-multiple-empty-lines": "error",
-        "key-spacing": ["error", { "beforeColon": false }]
-    }
+        "key-spacing": [
+            "error",
+            {
+                "beforeColon": false
+            }
+        ]
+    },
+    "overrides": [
+        {
+            "files": "**/*.test.js",
+            "rules": {
+                "node/no-unpublished-require": 0,
+                "node/no-missing-require": 0
+            }
+        }
+    ]
 }
