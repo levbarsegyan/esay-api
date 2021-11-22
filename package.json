@@ -9,10 +9,10 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "dev": "nodemon -e yaml,js,json --experimental-json-modules server",
-    "prod": "node server",
+    "dev": "nodemon -e yaml,js,json --experimental-json-modules index",
+    "prod": "node index",
     "lint": "eslint ./",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles",
     "postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
@@ -23,7 +23,10 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ],
-    "verbose": true
+    "verbose": true,
+    "globals": {
+      "__DB__": {}
+    }
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
@@ -39,6 +42,7 @@
     "nodemailer": "^6.4.17",
     "nodemailer-smtp-transport": "^2.7.4",
     "pg": "^8.5.1",
+    "pg-pool": "^3.2.2",
     "pgtools": "^0.3.0",
     "swagger-ui-express": "^4.1.6",
     "yamljs": "^0.3.0"

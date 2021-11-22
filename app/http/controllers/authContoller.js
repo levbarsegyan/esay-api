@@ -2,24 +2,31 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import registerValidator from '../validators/registerValidator.js'
 import loginValidator from '../validators/loginValidator.js'
-const authController = () => {
+const authController = () => {  
     return {
         async register(req, res){
             const db = req.app.get('db')
+            db.query(`CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY NOT NULL, 
+                fullname TEXT NOT NULL,
+                email TEXT NOT NULL,
+                password TEXT NOT NULL,
+                is_verified BOOLEAN DEFAULT false
+                )`)
             const { fullname, email, password, confirmpassword, } = req.body
             try {
                 await registerValidator.validateAsync({ fullname, email, password, confirmpassword, })
-                const user = await db.query('select * from users where email=$1', [ email ])
+                const user = await db.query('SELECT * FROM users WHERE email=$1', [ email ])
                 if (user.rowCount > 0){
                     return res.status(200).json({ msg: 'user already exist', })
                 } else {
                     const hasedPassword = await bcrypt.hash(password, 10)
                     const token = jwt.sign({ email, }, process.env.tockensecret, { expiresIn: '1H', })
                     try {
-                        await db.query('insert into users (fullname,email,password) values ($1,$2,$3)', [ fullname, email, hasedPassword ])
+                        await db.query('INSERT INTO users (fullname,email,password) VALUES ($1,$2,$3)', [ fullname, email, hasedPassword ])
                         return res.status(200).json({ msg: 'you are registred successfully..', token, })
                     } catch (error) {
-                        return res.status(500).json({ mag: 'something went wrong!!!', })
+                        return res.status(500).json({ msg: `${error} - something went wrong!!!`, })
                     }
                 }
             } catch (error) {
@@ -33,7 +40,7 @@ const authController = () => {
             try {
                 await loginValidator.validateAsync({ email, password, })
                 try {
-                    const data = await db.query('select * from users where email=$1', [ email ])
+                    const data = await db.query('SELECT * FROM users WHERE email=$1', [ email ])
                     if(data.rowCount > 0){
                         const incriptPass = data.rows[ 0 ].password
                         const comp = bcrypt.compare(password, incriptPass)
