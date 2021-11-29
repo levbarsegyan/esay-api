@@ -6,13 +6,6 @@ const authController = () => {
     return {
         async register(req, res){
             const db = req.app.get('db')
-            db.query(`CREATE TABLE IF NOT EXISTS users (
-                id SERIAL PRIMARY KEY NOT NULL, 
-                fullname TEXT NOT NULL,
-                email TEXT NOT NULL,
-                password TEXT NOT NULL,
-                is_verified BOOLEAN DEFAULT false
-                )`)
             const { fullname, email, password, confirmpassword, } = req.body
             try {
                 await registerValidator.validateAsync({ fullname, email, password, confirmpassword, })

@@ -35,7 +35,7 @@ const multiFileSwagger = (root) => {
 })()
 initRoutes(app)
 import connection from './app/database/connection.js'
-if (process.env.NODE_ENV === 'dev') {
+if (process.env.NODE_ENV != 'test') {
     (async () => {
         const client = await connection()
         app.set('db', client)
