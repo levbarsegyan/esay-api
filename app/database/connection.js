@@ -1,18 +1,18 @@
-import Pg from 'pg'
-const { Client, } = Pg
-async function connection() {
-    const client = new Client({
-        user: process.env.DbUser,
-        host: process.env.DbHost,
-        database: process.env.NODE_ENV === 'test' ? process.env.DbName_test : process.env.DbName,
-        password: process.env.DbPassword,
-        port: process.env.DbPort,
-    })
-    try {
-        await client.connect()
-        return client
-    } catch (error) {
-        console.log(error)
-    }
-}
-export default connection
+import Sequelize from 'sequelize'
+import dotenv from 'dotenv'
+dotenv.config()
+import config from '../../config/config.json'
+const nodeEnv = process.env.NODE_ENV
+const connectJson = config[ nodeEnv ]
+export default new Sequelize(connectJson.database, connectJson.username, connectJson.password, {
+    host: connectJson.host,
+    dialect: 'postgres',
+    operatorsAliases: false,
+    logging: false,
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+    },
+})

@@ -2,21 +2,25 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import registerValidator from '../validators/registerValidator.js'
 import loginValidator from '../validators/loginValidator.js'
+import UserModel from '../../database/models/User.js' 
 const authController = () => {  
     return {
         async register(req, res){
-            const db = req.app.get('db')
             const { fullname, email, password, confirmpassword, } = req.body
             try {
                 await registerValidator.validateAsync({ fullname, email, password, confirmpassword, })
-                const user = await db.query('SELECT * FROM users WHERE email=$1', [ email ])
-                if (user.rowCount > 0){
+                const user = await UserModel.findAll({ where: { email, }, })
+                if (user.length > 0){
                     return res.status(200).json({ msg: 'user already exist', })
                 } else {
                     const hasedPassword = await bcrypt.hash(password, 10)
-                    const token = jwt.sign({ email, }, process.env.tockensecret, { expiresIn: '1H', })
+                    const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1H', })
                     try {
-                        await db.query('INSERT INTO users (fullname,email,password) VALUES ($1,$2,$3)', [ fullname, email, hasedPassword ])
+                        await UserModel.create({
+                            fullname,
+                            email,
+                            password: hasedPassword,
+                        })
                         return res.status(200).json({ msg: 'you are registred successfully..', token, })
                     } catch (error) {
                         return res.status(500).json({ msg: `${error} - something went wrong!!!`, })
@@ -28,17 +32,16 @@ const authController = () => {
             }
         },
         async login(req, res){
-            const db = req.app.get('db')
             const { email, password, } = req.body
             try {
                 await loginValidator.validateAsync({ email, password, })
                 try {
-                    const data = await db.query('SELECT * FROM users WHERE email=$1', [ email ])
-                    if(data.rowCount > 0){
-                        const incriptPass = data.rows[ 0 ].password
+                    const user = await UserModel.findAll({ where: { email, }, })
+                    if(user.length > 0){
+                        const incriptPass = user[ 0 ].dataValues.password
                         const comp = bcrypt.compare(password, incriptPass)
                         if(comp){
-                            const token = jwt.sign({ email, }, process.env.tockensecret, { expiresIn: '1h', })
+                            const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', })
                             return res.json({ msg: 'logged in successfully!!!', token, })
                         }
                         else{

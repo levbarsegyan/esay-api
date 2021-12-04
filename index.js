@@ -1,4 +1,3 @@
-process.env.NODE_ENV = 'dev'
 const PORT = process.env.PORT || 5000
 import app from './server.js'
 app.listen(PORT, () =>

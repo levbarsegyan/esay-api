@@ -9,6 +9,17 @@ import swaggerUi from 'swagger-ui-express'
 import yamljs from 'yamljs'
 import resolve from 'json-refs'
 import path from 'path'
+import db from './app/database/connection.js'
+(async () => {
+    try {
+        await db.authenticate()
+        await db.sync()
+        console.log('All models were synchronized successfully.')
+        console.log(process.env.NODE_ENV)
+    } catch (err) {
+        console.log('Error: ' + err)
+    }
+})()
 const multiFileSwagger = (root) => {
     const options = {
         filter: [ 'relative', 'remote' ],
@@ -34,11 +45,4 @@ const multiFileSwagger = (root) => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 })()
 initRoutes(app)
-import connection from './app/database/connection.js'
-if (process.env.NODE_ENV != 'test') {
-    (async () => {
-        const client = await connection()
-        app.set('db', client)
-    })()
-}
 export default app
