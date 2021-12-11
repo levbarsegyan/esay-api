@@ -1,13 +1,13 @@
 import app from '../server'
 import request from 'supertest'
-import User from '../app/database/models/User.js'
+import User from '../app/database/models/User.js' 
 import db from '../app/database/connection.js'
 describe('Auth test api', function () {
-    beforeAll(async (done) => {
+    beforeAll(async(done) => {
         await User.sync()
         done()
     })
-    afterAll(async (done) => {
+    afterAll(async(done) => {
         await db.drop()
         done()
     })
@@ -22,7 +22,7 @@ describe('Auth test api', function () {
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) return done(err)
                 expect(res.body).toHaveProperty('msg')
                 expect(res.body).toHaveProperty('token')
@@ -38,7 +38,7 @@ describe('Auth test api', function () {
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 if (err) return done(err)
                 expect(res.body).toHaveProperty('msg')
                 expect(res.body).toHaveProperty('token')
