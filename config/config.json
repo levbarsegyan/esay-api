@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "projectmanager",
-    "host": "localhost",
+    "username": "admin",
+    "password": "33syc00lab",
+    "database": "easycollab",
+    "host": "db.realdev.in",
     "dialect": "postgres"
   },
   "test": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "projectmanager_test",
-    "host": "localhost",
+    "username": "admin",
+    "password": "33syc00lab",
+    "database": "easycollab_test",
+    "host": "db.realdev.in",
     "dialect": "postgres"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "admin",
+    "password": "33syc00lab",
+    "database": "easycollab",
+    "host": "db.realdev.in",
+    "dialect": "postgres"
   }
 }
