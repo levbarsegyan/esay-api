@@ -6,7 +6,8 @@ import UserModel from '../../database/models/User.js'
 const authController = () => {  
     return {
         async register(req, res){
-            const { fullname, email, password, confirmpassword, } = req.body
+            let { fullname, email, password, confirmpassword, } = req.body
+            email = email.trim()
             try {
                 await registerValidator.validateAsync({ fullname, email, password, confirmpassword, })
                 const user = await UserModel.findAll({ where: { email, }, })
