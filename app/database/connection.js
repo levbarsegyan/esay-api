@@ -1,7 +1,5 @@
 import Sequelize from 'sequelize'
-import dotenv from 'dotenv'
-dotenv.config()
-import config from '../../config/config.json'
+import config from '../../config/config.js'
 const nodeEnv = process.env.NODE_ENV
 const connectJson = config[ nodeEnv ]
 export default new Sequelize(connectJson.database, connectJson.username, connectJson.password, {
