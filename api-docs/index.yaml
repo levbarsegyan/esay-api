@@ -3,8 +3,8 @@ tags:
 - name: user
   description: Operations about user
 servers:
-- url: http://127.0.0.1:5000/api
-- url: http://localhost:5000/api
+- url: https://api.realdev.in/
+- url: http://localhost:5000/
 schemes:
 - https
 - http
