@@ -2,13 +2,13 @@ image: node:latest
 before_script:
     - echo $env > .env
     - cat .env
+variables:
+  HUSKY: 0
 cache:
   paths:
     - node_modules/
     - .yarn
 test_api:
-  environment:
-    - HUSKY: 0
   script:
     - yarn install
     - yarn test
