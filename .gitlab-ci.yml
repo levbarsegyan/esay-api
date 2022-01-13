@@ -1,7 +1,5 @@
-image: node:latest
 before_script:
-    - echo $env > .env
-    - cat .env
+    - echo $env
 variables:
   HUSKY: 0
 cache:
