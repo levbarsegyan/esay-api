@@ -1,5 +1,5 @@
 before_script:
-    - echo $env
+    - echo "$env_config"
 variables:
   HUSKY: 0
 cache:
