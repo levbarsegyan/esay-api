@@ -1,14 +1,14 @@
 image: node:latest
 before_script:
     - echo "$env_config" > ".env"
-    - cat .env
-variables:
-  HUSKY: 0
+    - export "HUSKY=0"
 cache:
   paths:
     - node_modules/
     - .yarn
 test_api:
+  only:
+    - pushes
   script:
     - yarn install
     - yarn test
