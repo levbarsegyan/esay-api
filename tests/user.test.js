@@ -13,7 +13,7 @@ describe('Auth test api', function () {
     })
     it('register a user', (done) => {
         request(app)
-            .post('/api/register')
+            .post('/register')
             .send({
                 fullname: 'Jhon Doe',
                 email: 'myemail@gmail.com',
@@ -31,7 +31,7 @@ describe('Auth test api', function () {
     })
     it('login a user', (done) => {
         request(app)
-            .post('/api/login')
+            .post('/login')
             .send({
                 email: 'myemail@gmail.com',
                 password: 'abcd1234',
