@@ -15,7 +15,7 @@ post:
     content:
       application/json:
         schema:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/RegisterForm'
   responses:
     '200':
       description: successful operation

@@ -1,13 +1,16 @@
 type: object
 properties:
-  id:
-    type: integer
-    format: int64
   fullname:
     type: string
+    example: Jhon Doe
   email:
     type: string
+    example: email@gmail.com
   password:
     type: string
+    format: password
+    example: abcd1234
   confirmpassword:
     type: string
+    format: password
+    example: abcd1234
