@@ -1,4 +1,4 @@
-RegisterForm:
-  $ref: ./RegisterForm.yaml
+User:
+  $ref: ./User.yaml
 LoginForm:
   $ref: ./LoginForm.yaml
