@@ -21,5 +21,5 @@ components:
   schemas:
     LoginForm:
       $ref: "./api-docs/schema/index.yaml#/LoginForm"
-    User:
-      $ref: "./api-docs/schema/index.yaml#/User"
+    RegisterForm:
+      $ref: "./api-docs/schema/index.yaml#/RegisterForm"
