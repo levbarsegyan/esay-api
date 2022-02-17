@@ -22,7 +22,8 @@ describe('Auth test api', function () {
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
-            .end(function (err, res) {
+            .expect(200)
+            .end(function(err, res) {
                 if (err) return done(err)
                 expect(res.body).toHaveProperty('msg')
                 expect(res.body).toHaveProperty('token')
@@ -38,7 +39,8 @@ describe('Auth test api', function () {
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
-            .end(function (err, res) {
+            .expect(200)
+            .end(function(err, res) {
                 if (err) return done(err)
                 expect(res.body).toHaveProperty('msg')
                 expect(res.body).toHaveProperty('token')

@@ -1,21 +1,23 @@
 import got from 'got'
 import UserModel from '../../database/models/User.js'
 import jwt from 'jsonwebtoken'
+import urls from '../../../config/urls.js'
 const githubSigninController = () => {
     return {
-        async githubAuth (req, res) {
-            res.redirect(`https:
-        },
         async githubAuthRedirect (req, res) {
-            const response = await got.post(`https:
+            res.redirect(urls.githubAuth.GithubAuthScreenUrl)
+        },
+        async githubAuth (req, res) {
+            const code = req.query.code
+            const response = await got.post(`${urls.githubAuth.getTokenUrl}&code=${code}`, { headers: { accept: 'application/json', }, })
             const accessToken = JSON.parse(response.body).access_token
-            let getuser = await got.get('https:
+            let getuser = await got.get(urls.githubAuth.getUserinfoUrl, {
                 headers: {
                     Authorization: `token ${accessToken}`,
                 },
             })
             getuser = JSON.parse(getuser.body)
-            let getuserEmail =  await got.get('https:
+            let getuserEmail =  await got.get(urls.githubAuth.getUserEmailUrl, {
                 headers: {
                     Authorization: `token ${accessToken}`,
                 },

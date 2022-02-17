@@ -39,8 +39,8 @@ const authController = () => {
                 try {
                     const user = await UserModel.findAll({ where: { email, }, })
                     if(user.length > 0){
-                        const incriptPass = user[ 0 ].dataValues.password
-                        const comp = bcrypt.compare(password, incriptPass)
+                        const encryptPass = user[ 0 ].dataValues.password
+                        const comp = bcrypt.compare(password, encryptPass)
                         if(comp){
                             const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', })
                             return res.json({ msg: 'logged in successfully!!!', token, })
