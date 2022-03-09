@@ -6,8 +6,8 @@ const initRoutes = (app) => {
     app.post('/register', authController().register)
     app.post('/login', authController().login)
     app.get('/oauth/redirect/github', githubSigninController().githubAuthRedirect)
-    app.get('oauth/signin/github', githubSigninController().githubAuth)
+    app.post('oauth/signin/github', githubSigninController().githubAuth)
     app.get('/oauth/redirect/google', GoogleAuthController().googleRedirect)
-    app.get('/oauth/signin/google', GoogleAuthController().googleauth)
+    app.post('/oauth/signin/google', GoogleAuthController().googleauth)
 }
 export default initRoutes
