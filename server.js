@@ -1,15 +1,20 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import initRoutes from './routes/api.js'
-dotenv.config()
 const app = express()
-app.use(express.urlencoded({ extended: true, }))
-app.use(express.json())
 import swaggerUi from 'swagger-ui-express'
 import yamljs from 'yamljs'
 import resolve from 'json-refs'
 import path from 'path'
 import db from './app/database/connection.js'
+import cors from 'cors'
+const corsOption = {
+    origin: [ 'http:
+}
+app.use(express.urlencoded({ extended: true, }))
+app.use(express.json())
+app.use(cors(corsOption))
+dotenv.config();
 (async () => {
     try {
         await db.authenticate()
@@ -38,7 +43,7 @@ const multiFileSwagger = (root) => {
         }
     )
 };
-(async ()=>{
+(async () => {
     const swaggerDocument = await multiFileSwagger(
         yamljs.load(path.resolve(process.cwd(), './api-docs/index.yaml'))
     )
