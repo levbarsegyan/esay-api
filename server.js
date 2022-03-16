@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
+dotenv.config();
 import initRoutes from './routes/api.js'
-const app = express()
 import swaggerUi from 'swagger-ui-express'
 import yamljs from 'yamljs'
 import resolve from 'json-refs'
@@ -11,10 +11,10 @@ import cors from 'cors'
 const corsOption = {
     origin: [ 'http:
 }
+const app = express()
 app.use(express.urlencoded({ extended: true, }))
 app.use(express.json())
 app.use(cors(corsOption))
-dotenv.config();
 (async () => {
     try {
         await db.authenticate()
