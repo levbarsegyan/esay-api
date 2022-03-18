@@ -67,7 +67,7 @@
         ],
         "semi": [
             "error",
-            "never"
+            "always"
         ],
         "comma-dangle": [
             "error",
