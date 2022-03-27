@@ -1,16 +1,16 @@
-import app from '../server';
-import request from 'supertest';
-import User from '../app/database/models/User.js';
-import db from '../app/database/connection.js';
+import app from '../server'
+import request from 'supertest'
+import User from '../app/database/models/User.js'
+import db from '../app/database/connection.js'
 describe('Auth test api', function () {
     beforeAll(async (done) => {
-        await User.sync();
-        done();
-    });
+        await User.sync()
+        done()
+    })
     afterAll(async (done) => {
-        await db.drop();
-        done();
-    });
+        await db.drop()
+        done()
+    })
     it('register a user', (done) => {
         request(app)
             .post('/register')
@@ -24,12 +24,12 @@ describe('Auth test api', function () {
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
-                if (err) return done(err);
-                expect(res.body).toHaveProperty('msg');
-                expect(res.body).toHaveProperty('token');
-                done();
-            });
-    });
+                if (err) return done(err)
+                expect(res.body).toHaveProperty('msg')
+                expect(res.body).toHaveProperty('token')
+                done()
+            })
+    })
     it('login a user', (done) => {
         request(app)
             .post('/login')
@@ -41,10 +41,10 @@ describe('Auth test api', function () {
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function(err, res) {
-                if (err) return done(err);
-                expect(res.body).toHaveProperty('msg');
-                expect(res.body).toHaveProperty('token');
-                done();
-            });
-    });
-});
+                if (err) return done(err)
+                expect(res.body).toHaveProperty('msg')
+                expect(res.body).toHaveProperty('token')
+                done()
+            })
+    })
+})

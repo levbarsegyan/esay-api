@@ -10,4 +10,4 @@ export default {
         getUserinfoUrl: 'https:
         getUserEmailUrl: 'https:
     },
-};
+}

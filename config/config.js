@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 export default {
     'development': {
         'username': process.env.DB_DEV_USERNAME,
@@ -22,4 +22,4 @@ export default {
         'host': process.env.DB_HOST,
         'dialect': 'postgres',
     },
-};
+}

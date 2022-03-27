@@ -1,5 +1,5 @@
-import db from '../connection.js';
-import sequelize from 'sequelize';
+import db from '../connection.js'
+import sequelize from 'sequelize'
 const User = db.define('users', {
     fullname: {
         type: sequelize.STRING,
@@ -21,5 +21,5 @@ const User = db.define('users', {
         type: sequelize.STRING,
         defaultValue: 'easy collab',
     },
-});
-export default User;
+})
+export default User
