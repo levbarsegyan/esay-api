@@ -27,7 +27,7 @@ const githubSigninController = () => {
                 getuserEmail = JSON.parse(getuserEmail.body);
                 const username = getuser.name;
                 const userid = getuser.id;
-                const email = getuserEmail[1].email;
+                const email = getuserEmail[ 1 ].email;
                 try {
                     const isUserExist = await UserModel.findAll({ where: { userid: userid.toString(), }, });
                     if (isUserExist.length == 0) {
@@ -45,7 +45,7 @@ const githubSigninController = () => {
                     return res.status(500).json({ msg: 'something went wrong', });
                 }
             } catch (error) {
-                res.status(401).json({ err: 'invelid code!!!!', });
+                res.status(401).json({ err: 'invalid code!!!!', });
             }
         },
     };

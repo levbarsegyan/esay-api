@@ -1,4 +1,4 @@
-import authController from '../app/http/controllers/authContoller.js';
+import authController from '../app/http/controllers/authController.js';
 import githubSigninController from '../app/http/controllers/githubSigninController.js';
 import GoogleAuthController from '../app/http/controllers/GoogleAuthController.js';
 const initRoutes = (app) => {
