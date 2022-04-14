@@ -2,14 +2,13 @@ import got from 'got';
 import UserModel from '../../database/models/User.js';
 import jwt from 'jsonwebtoken';
 import urls from '../../../config/urls.js';
-const githubSigninController = () => {
+const githubAuthController = () => {
     return {
         async githubAuthRedirect (req, res) {
             res.redirect(urls.githubAuth.GithubAuthScreenUrl);
         },
         async githubAuth (req, res) {
             const { code, } = req.body;
-            console.log(code);
             try {
                 const response = await got.post(`${urls.githubAuth.getTokenUrl}&code=${code}`, { headers: { accept: 'application/json', }, });
                 const accessToken = JSON.parse(response.body).access_token;
@@ -27,7 +26,7 @@ const githubSigninController = () => {
                 getuserEmail = JSON.parse(getuserEmail.body);
                 const username = getuser.name;
                 const userid = getuser.id;
-                const email = getuserEmail[ 1 ].email;
+                const email = getuserEmail[ 0 ].email;
                 try {
                     const isUserExist = await UserModel.findAll({ where: { userid: userid.toString(), }, });
                     if (isUserExist.length == 0) {
@@ -50,4 +49,4 @@ const githubSigninController = () => {
         },
     };
 };
-export default githubSigninController;
+export default githubAuthController;

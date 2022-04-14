@@ -2,14 +2,13 @@ import got from 'got';
 import UserModel from '../../database/models/User.js';
 import jwt from 'jsonwebtoken';
 import urls from '../../../config/urls.js';
-const GoogleAuthController = () => {
+const googleAuthController = () => {
     return {
         googleRedirect (req, res) {
             res.redirect(urls.googleAuth.googleAuthScreenUrl);
         },
         async googleauth (req, res) {
-            const code = req.query.code;
-            await console.log(code);
+            const code = req.body.code;
             let { body, } = await got.post(`${urls.googleAuth.getTokenUrl}&code=${code}`).catch((e) => console.log(e));
             body = JSON.parse(body);
             let token = body.access_token;
@@ -37,4 +36,4 @@ const GoogleAuthController = () => {
         },
     };
 };
-export default GoogleAuthController;
+export default googleAuthController;

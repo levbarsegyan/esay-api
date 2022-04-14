@@ -1,16 +1,16 @@
 import authController from '../app/http/controllers/authController.js';
-import githubSigninController from '../app/http/controllers/githubSigninController.js';
-import GoogleAuthController from '../app/http/controllers/GoogleAuthController.js';
+import githubAuthController from '../app/http/controllers/githubAuthController.js';
+import googleAuthController from '../app/http/controllers/googleAuthController.js';
 const initRoutes = (app) => {
     app.get('/', (req, res) => res.send('<h1>Welcome to EasyCollab</h1>'));
     app.post('/register', authController().register);
     app.post('/login', authController().login);
     app.get(
         '/oauth/redirect/github',
-        githubSigninController().githubAuthRedirect
+        githubAuthController().githubAuthRedirect
     );
-    app.post('/oauth/signin/github', githubSigninController().githubAuth);
-    app.get('/oauth/redirect/google', GoogleAuthController().googleRedirect);
-    app.post('/oauth/signin/google', GoogleAuthController().googleauth);
+    app.post('/oauth/signin/github', githubAuthController().githubAuth);
+    app.get('/oauth/redirect/google', googleAuthController().googleRedirect);
+    app.post('/oauth/signin/google', googleAuthController().googleauth);
 };
 export default initRoutes;
