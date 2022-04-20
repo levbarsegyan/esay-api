@@ -2,3 +2,5 @@ RegisterForm:
   $ref: ./RegisterForm.yaml
 LoginForm:
   $ref: ./LoginForm.yaml
+Oauth:
+  $ref: ./Oauth.yaml

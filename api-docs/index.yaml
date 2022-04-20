@@ -15,6 +15,14 @@ paths:
     $ref: ./api-docs/paths/index.yaml#/login
   /register:
     $ref: ./api-docs/paths/index.yaml#/register
+  /oauth/redirect/github:
+    $ref: ./api-docs/paths/index.yaml#/redirect_github
+  /oauth/signin/github:
+    $ref: ./api-docs/paths/index.yaml#/signin_github
+  /oauth/redirect/google:
+    $ref: ./api-docs/paths/index.yaml#/redirect_google
+  /oauth/signin/google:
+    $ref: ./api-docs/paths/index.yaml#/signin_google
 components:
   responses:
       $ref: "./api-docs/responses.yaml"
@@ -23,3 +31,5 @@ components:
       $ref: "./api-docs/schema/index.yaml#/LoginForm"
     RegisterForm:
       $ref: "./api-docs/schema/index.yaml#/RegisterForm"
+    Oauth:
+      $ref: "./api-docs/schema/index.yaml#/Oauth"

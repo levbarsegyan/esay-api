@@ -1,0 +1,31 @@
+post:
+  tags:
+  - user
+  summary: Logs user into the system using google oauth
+  description: ''
+  operationId: oauthSigninGoogle
+  consumes:
+  - application/json
+  produces:
+  - application/json
+  - application/xml
+  requestBody:
+    description: The access code received from google after successful authorization
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/Oauth'
+  responses:
+    '200':
+      description: successful operation
+      $ref: '#/components/responses/ApiResponse'
+      example:
+        msg: logged in successfully!!!
+        token: fodijhsj32432n5lksfdj8w3498275
+    '401':
+      description: Error Unauthorized
+      $ref: "#/components/responses/ErrorResponse"
+    '500':
+      description: server error
+      $ref: "#/components/responses/ErrorResponse"

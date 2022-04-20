@@ -1,0 +1,15 @@
+get:
+  tags:
+  - user
+  summary: Redirect to google page for authorization
+  description: ''
+  operationId: oauthGoogle
+  responses:
+    '200':
+      description: success
+    '400':
+      description: Invalid username/password supplied 
+      $ref: "#/components/responses/ErrorResponse"
+    '500':
+      description: server error
+      $ref: "#/components/responses/ErrorResponse"

@@ -2,3 +2,11 @@ login:
   $ref: ./login.yaml
 register:
   $ref: ./register.yaml
+redirect_github:
+  $ref: ./redirect_github.yaml
+signin_github:
+  $ref: ./signin_github.yaml
+redirect_google:
+  $ref: ./redirect_google.yaml
+signin_google:
+  $ref: ./signin_google.yaml
