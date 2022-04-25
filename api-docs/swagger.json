@@ -57,7 +57,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ApiResponse"
+                                    "$ref": "#/definitions/2XXResponse"
                                 },
                                 "example": {
                                     "msg": "logged in successfully!!!",
@@ -71,7 +71,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/definitions/4XXResponse"
                                 },
                                 "example": {
                                     "msg": "internal server error"
@@ -84,7 +84,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/definitions/4XXResponse"
                                 },
                                 "example": {
                                     "error": "some error will be shown here!"
@@ -127,7 +127,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ApiResponse"
+                                    "$ref": "#/definitions/2XXResponse"
                                 },
                                 "example": {
                                     "msg": "you are registred successfully..",
@@ -141,7 +141,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/definitions/4XXResponse"
                                 },
                                 "example": {
                                     "msg": "something went wrong!!!"
@@ -154,7 +154,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/definitions/ErrorResponse"
+                                    "$ref": "#/definitions/4XXResponse"
                                 },
                                 "example": {
                                     "error": "some error will be shown here!"
@@ -167,7 +167,7 @@
         }
     },
     "definitions": {
-        "ApiResponse": {
+        "2XXResponse": {
             "type": "object",
             "properties": {
                 "msg": {
@@ -178,7 +178,7 @@
                 }
             }
         },
-        "ErrorResponse": {
+        "4XXResponse": {
             "type": "object",
             "properties": {
                 "msg/err/error": {

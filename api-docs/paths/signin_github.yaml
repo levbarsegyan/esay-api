@@ -18,14 +18,11 @@ post:
           $ref: '#/components/schemas/Oauth'
   responses:
     '200':
-      description: successful operation
-      $ref: '#/components/responses/ApiResponse'
+      $ref: '#/components/responses/2XXResponse'
       example:
-        msg: logged in successfully!!!
+        msg: sign in successfully
         token: fodijhsj32432n5lksfdj8w3498275
     '401':
-      description: Error Unauthorized
-      $ref: "#/components/responses/ErrorResponse"
+      $ref: "#/components/responses/4XXResponse"
     '500':
-      description: server error
-      $ref: "#/components/responses/ErrorResponse"
+      $ref: "#/components/responses/5XXResponse"

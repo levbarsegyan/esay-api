@@ -6,10 +6,8 @@ get:
   operationId: oauthGoogle
   responses:
     '200':
-      description: success
-    '400':
-      description: Invalid username/password supplied 
-      $ref: "#/components/responses/ErrorResponse"
-    '500':
-      description: server error
-      $ref: "#/components/responses/ErrorResponse"
+      description: OK
+    '4XX':
+      $ref: "#/components/responses/4XXResponse"
+    '5XX':
+      $ref: "#/components/responses/5XXResponse"

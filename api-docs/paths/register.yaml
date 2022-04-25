@@ -18,14 +18,13 @@ post:
           $ref: '#/components/schemas/RegisterForm'
   responses:
     '200':
-      description: successful operation
-      $ref: '#/components/responses/ApiResponse' 
+      $ref: '#/components/responses/2XXResponse' 
       example:
-        msg: you are registred successfully..
+        msg: you are registered successfully..
         token: fodijhsj32432n5lksfdj8w3498275
-    '400':
-      description: validation error
-      $ref: '#/components/responses/ErrorResponse'
+    '409':
+      $ref: '#/components/responses/4XXResponse'
+    '422':
+      $ref: '#/components/responses/4XXResponse'
     '500':
-      description: validation error
-      $ref: '#/components/responses/ErrorResponse'
+      $ref: '#/components/responses/5XXResponse'

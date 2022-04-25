@@ -1,4 +1,5 @@
-ApiResponse:
+2XXResponse:
+  description: OK
   content:
     application/json:
       schema:
@@ -8,13 +9,25 @@ ApiResponse:
             type: string
           token:
             type: string
-ErrorResponse: 
+4XXResponse: 
+  description: Bad Request
   content:
     application/json:
       schema:
         type: object
         properties:
-          msg/err/error:
+          Error:
             type: string
       example:
-        Error: some error will be shown here!
+        Error: Some validation error
+5XXResponse: 
+  description: Server Error
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          msg:
+            type: string
+      example:
+        msg: Something Went Wrong!
