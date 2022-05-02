@@ -1,7 +1,9 @@
-image: node:latest
+image: buildkite/puppeteer:latest
 before_script:
     - echo "$env_config" > ".env"
+    - echo "$github_cookie" > "github.cookie.json"
     - export "HUSKY=0"
+    - apt-get update && apt-get install -y procps
 cache:
   paths:
     - node_modules/
@@ -11,4 +13,4 @@ test_api:
     - pushes
   script:
     - yarn install
-    - yarn test
+    - yarn test --runInBand

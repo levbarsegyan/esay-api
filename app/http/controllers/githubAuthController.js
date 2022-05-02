@@ -4,13 +4,16 @@ import jwt from 'jsonwebtoken';
 import urls from '../../../config/urls.js';
 const githubAuthController = () => {
     return {
-        async githubAuthRedirect (req, res) {
+        async githubAuthRedirect(req, res) {
             res.redirect(urls.githubAuth.GithubAuthScreenUrl);
         },
-        async githubAuth (req, res) {
+        async githubAuth(req, res) {
             const { code, } = req.body;
             try {
-                const response = await got.post(`${urls.githubAuth.getTokenUrl}&code=${code}`, { headers: { accept: 'application/json', }, });
+                const response = await got.post(
+                    `${urls.githubAuth.getTokenUrl}&code=${code}`,
+                    { headers: { accept: 'application/json', }, }
+                );
                 const accessToken = JSON.parse(response.body).access_token;
                 let getuser = await got.get(urls.githubAuth.getUserinfoUrl, {
                     headers: {
@@ -28,7 +31,9 @@ const githubAuthController = () => {
                 const userid = getuser.id;
                 const email = getuserEmail[ 0 ].email;
                 try {
-                    const isUserExist = await UserModel.findAll({ where: { userid: userid.toString(), }, });
+                    const isUserExist = await UserModel.findAll({
+                        where: { userid: userid.toString(), },
+                    });
                     if (isUserExist.length == 0) {
                         await UserModel.create({
                             fullname: username,
@@ -37,13 +42,20 @@ const githubAuthController = () => {
                             provider: 'github auth',
                         });
                     }
-                    const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1H', });
-                    return res.status(200).json({ msg: 'sign in successfully', token: token, });
+                    const token = jwt.sign({ email, }, process.env.tokensecret, {
+                        expiresIn: '1H',
+                    });
+                    return res
+                        .status(200)
+                        .json({ msg: 'sign in successfully', token: token, });
                 } catch (error) {
                     console.log(error);
                     return res.status(500).json({ msg: 'something went wrong', });
                 }
-            } catch (error) {
+            } catch (e) {
+                if (e instanceof got.RequestError) {
+                    console.error(e, e.request, e.response);
+                } else console.error(e);
                 res.status(401).json({ err: 'invalid code!!!!', });
             }
         },
