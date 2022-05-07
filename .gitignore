@@ -4,3 +4,4 @@ workspace.code-workspace
 .DS_Store
 package-lock.json
 *.cookie.json
+snapshots/*.*

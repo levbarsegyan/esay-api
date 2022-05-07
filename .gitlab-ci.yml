@@ -2,6 +2,7 @@ image: buildkite/puppeteer:latest
 before_script:
     - echo "$env_config" > ".env"
     - echo "$github_cookie" > "github.cookie.json"
+    - echo "$google_cookie" > "google.cookie.json"
     - export "HUSKY=0"
     - apt-get update && apt-get install -y procps
 cache:

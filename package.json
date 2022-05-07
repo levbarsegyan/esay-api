@@ -1,80 +1,85 @@
 {
-  "name": "project-managment-tool-api",
-  "version": "1.0.0",
-  "description": "An open-source project managment tool built on Node Js",
-  "main": "index.js",
-  "repository": "git@github.com:Real-Dev-Experience/project-managment-tool-api.git",
-  "author": "Rakesh K <codersgyan@gmail.com>",
-  "license": "MIT",
-  "private": false,
-  "type": "module",
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "scripts": {
-    "dev": "nodemon -e yaml,js,json --experimental-json-modules index",
-    "prod": "node index",
-    "lint": "eslint ./",
-    "test": "JEST_PUPPETEER_CONFIG=jest-puppeteer.config.cjs node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit",
-    "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable",
-    "postpublish": "pinst --enable",
-    "migrate": "sequelize db:migrate",
-    "dbcreate": "yarn sequelize db:create",
-    "pretest": "cross-env NODE_ENV=test"
-  },
-  "jest": {
-    "testEnvironment": "jest-environment-node",
-    "transform": {},
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "verbose": false,
-    "setupFiles": [
-      "dotenv/config"
-    ],
-    "preset": "jest-puppeteer",
-    "globals": {
-      "__DB__": {}
+    "name": "project-managment-tool-api",
+    "version": "1.0.0",
+    "description": "An open-source project managment tool built on Node Js",
+    "main": "index.js",
+    "repository": "git@github.com:Real-Dev-Experience/project-managment-tool-api.git",
+    "author": "Rakesh K <codersgyan@gmail.com>",
+    "license": "MIT",
+    "private": false,
+    "type": "module",
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "scripts": {
+        "dev": "nodemon -e yaml,js,json --experimental-json-modules index",
+        "prod": "node index",
+        "lint": "eslint ./",
+        "test": "JEST_PUPPETEER_CONFIG=jest-puppeteer.config.cjs node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit",
+        "postinstall": "husky install",
+        "prepublishOnly": "pinst --disable",
+        "postpublish": "pinst --enable",
+        "migrate": "sequelize db:migrate",
+        "dbcreate": "yarn sequelize db:create",
+        "pretest": "cross-env NODE_ENV=test",
+        "upload": "imgur snapshots/*.png"
+    },
+    "jest": {
+        "testEnvironment": "jest-environment-node",
+        "transform": {},
+        "coveragePathIgnorePatterns": [
+            "/node_modules/"
+        ],
+        "verbose": true,
+        "setupFiles": [
+            "dotenv/config"
+        ],
+        "preset": "jest-puppeteer",
+        "globals": {
+            "__DB__": {}
+        }
+    },
+    "dependencies": {
+        "bcrypt": "^5.0.0",
+        "cors": "^2.8.5",
+        "db-migrate": "^0.11.12",
+        "dotenv": "^8.2.0",
+        "eslint-plugin-node": "^11.1.0",
+        "express": "^4.17.1",
+        "fast-glob": "^3.2.5",
+        "fs": "^0.0.1-security",
+        "googleapis": "^67.1.0",
+        "got": "^11.8.1",
+        "joi": "^17.3.0",
+        "js-yaml": "^4.0.0",
+        "json-refs": "^3.0.15",
+        "jsonwebtoken": "^8.5.1",
+        "jwt-decode": "^3.1.2",
+        "multi-file-swagger": "^2.3.0",
+        "node-pg-migrate": "^5.9.0",
+        "nodemailer": "^6.4.17",
+        "nodemailer-smtp-transport": "^2.7.4",
+        "pg": "^8.5.1",
+        "pg-hstore": "^2.3.3",
+        "pg-pool": "^3.2.2",
+        "pgtools": "^0.3.0",
+        "puppeteer": "^8.0.0",
+        "sequelize": "^6.5.0",
+        "swagger-ui-express": "^4.1.6",
+        "yamljs": "^0.3.0"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "eslint": "^7.18.0",
+        "husky": "^5.0.6",
+        "imgur": "^1.0.0",
+        "jest": "^26.6.3",
+        "jest-dev-server": "^4.4.0",
+        "jest-puppeteer": "^4.4.0",
+        "nodemon": "^2.0.7",
+        "puppeteer-extra": "^3.1.18",
+        "puppeteer-extra-plugin-stealth": "^2.7.6",
+        "sequelize-cli": "^6.2.0",
+        "supertest": "6.1.1"
     }
-  },
-  "dependencies": {
-    "bcrypt": "^5.0.0",
-    "cors": "^2.8.5",
-    "db-migrate": "^0.11.12",
-    "dotenv": "^8.2.0",
-    "eslint-plugin-node": "^11.1.0",
-    "express": "^4.17.1",
-    "fs": "^0.0.1-security",
-    "googleapis": "^67.1.0",
-    "got": "^11.8.1",
-    "joi": "^17.3.0",
-    "js-yaml": "^4.0.0",
-    "json-refs": "^3.0.15",
-    "jsonwebtoken": "^8.5.1",
-    "jwt-decode": "^3.1.2",
-    "multi-file-swagger": "^2.3.0",
-    "node-pg-migrate": "^5.9.0",
-    "nodemailer": "^6.4.17",
-    "nodemailer-smtp-transport": "^2.7.4",
-    "pg": "^8.5.1",
-    "pg-hstore": "^2.3.3",
-    "pg-pool": "^3.2.2",
-    "pgtools": "^0.3.0",
-    "puppeteer": "^8.0.0",
-    "sequelize": "^6.5.0",
-    "swagger-ui-express": "^4.1.6",
-    "yamljs": "^0.3.0"
-  },
-  "devDependencies": {
-    "cross-env": "^7.0.3",
-    "eslint": "^7.18.0",
-    "husky": "^5.0.6",
-    "jest": "^26.6.3",
-    "jest-dev-server": "^4.4.0",
-    "jest-puppeteer": "^4.4.0",
-    "nodemon": "^2.0.7",
-    "sequelize-cli": "^6.2.0",
-    "supertest": "6.1.1"
-  }
 }

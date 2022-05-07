@@ -21,11 +21,14 @@ const githubAuthController = () => {
                     },
                 });
                 getuser = JSON.parse(getuser.body);
-                let getuserEmail = await got.get(urls.githubAuth.getUserEmailUrl, {
-                    headers: {
-                        Authorization: `token ${accessToken}`,
-                    },
-                });
+                let getuserEmail = await got.get(
+                    urls.githubAuth.getUserEmailUrl,
+                    {
+                        headers: {
+                            Authorization: `token ${accessToken}`,
+                        },
+                    }
+                );
                 getuserEmail = JSON.parse(getuserEmail.body);
                 const username = getuser.name;
                 const userid = getuser.id;
@@ -50,12 +53,12 @@ const githubAuthController = () => {
                         .json({ msg: 'sign in successfully', token: token, });
                 } catch (error) {
                     console.log(error);
-                    return res.status(500).json({ msg: 'something went wrong', });
+                    return res
+                        .status(500)
+                        .json({ msg: 'something went wrong', });
                 }
             } catch (e) {
-                if (e instanceof got.RequestError) {
-                    console.error(e, e.request, e.response);
-                } else console.error(e);
+                console.error(e);
                 res.status(401).json({ err: 'invalid code!!!!', });
             }
         },
