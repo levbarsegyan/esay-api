@@ -66,7 +66,7 @@ const signin = (done, provider) => {
         .end((err, res) => {
             if (err) return done(err);
             expect(res.body).toHaveProperty('msg');
-            expect(res.body).toHaveProperty('token');
+            expect(res.headers).toHaveProperty('set-cookie');
             done();
         });
 };

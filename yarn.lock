@@ -4449,11 +4449,7 @@ memoizee@^0.4.14:
     next-tick "^1.1.0"
     timers-ext "^0.1.7"
 
-<<<<<<< HEAD
 merge-deep@^3.0.1, merge-deep@^3.0.2:
-=======
-merge-deep@^3.0.2:
->>>>>>> d1ebe2e3ac8bb6e5b395dfb9e36d12fd5add66b5
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/merge-deep/-/merge-deep-3.0.3.tgz#1a2b2ae926da8b2ae93a0ac15d90cd1922766003"
   integrity sha512-qtmzAS6t6grwEkNrunqTBdn0qKwFgNWvlxUbAV8es9M7Ot1EbyApytCnvE0jALPa46ZpKDUo527kKiaWplmlFA==
@@ -5513,7 +5509,6 @@ pupa@^2.0.1:
   dependencies:
     escape-goat "^2.0.0"
 
-<<<<<<< HEAD
 puppeteer-extra-plugin-stealth@^2.7.6:
   version "2.7.6"
   resolved "https://registry.yarnpkg.com/puppeteer-extra-plugin-stealth/-/puppeteer-extra-plugin-stealth-2.7.6.tgz#4ee561d7134a382447bf9537c878ebbd64283965"
@@ -5561,8 +5556,6 @@ puppeteer-extra@^3.1.18:
     debug "^4.1.1"
     deepmerge "^4.2.2"
 
-=======
->>>>>>> d1ebe2e3ac8bb6e5b395dfb9e36d12fd5add66b5
 puppeteer@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-8.0.0.tgz#a236669118aa795331c2d0ca19877159e7664705"
@@ -5910,7 +5903,6 @@ rsvp@^4.8.4:
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
   integrity sha512-nfMOlASu9OnRJo1mbEk2cz0D56a1MBNrJ7orjRZQG10XDyuvwksKbuXNp6qa+kbn839HwjwhBzhFmdsaEAfauA==
 
-<<<<<<< HEAD
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"
@@ -5918,8 +5910,6 @@ run-parallel@^1.1.9:
   dependencies:
     queue-microtask "^1.2.2"
 
-=======
->>>>>>> d1ebe2e3ac8bb6e5b395dfb9e36d12fd5add66b5
 rx@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/rx/-/rx-4.1.0.tgz#a5f13ff79ef3b740fe30aa803fb09f98805d4782"

@@ -22,7 +22,10 @@ const authController = () => {
                             email,
                             password: hasedPassword,
                         });
-                        return res.status(200).json({ msg: 'you are registred successfully..', token, });
+                        const fourteenDaysToSeconds = 24 * 60 * 60 * 14;
+                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
+                        res.setHeader('Access-Control-Allow-Credentials', 'true');                      
+                        return res.status(200).json({ msg: 'you are registred successfully..', });
                     } catch (error) {
                         return res.status(500).json({ msg: `${error} - something went wrong!!!`, });
                     }
@@ -42,8 +45,11 @@ const authController = () => {
                         const encryptPass = user[ 0 ].dataValues.password;
                         const comp = bcrypt.compare(password, encryptPass);
                         if (comp) {
+                            const fourteenDaysToSeconds = 24 * 60 * 60 * 14;
                             const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', });
-                            return res.status(200).json({ msg: 'logged in successfully!!!', token, });
+                            res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
+                            res.setHeader('Access-Control-Allow-Credentials', 'true');
+                            return res.status(200).json({ msg: 'logged in successfully!!!', });
                         }
                         else {
                             return res.status(401).json({ err: 'wrong email or password', });

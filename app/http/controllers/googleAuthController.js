@@ -28,7 +28,10 @@ const googleAuthController = () => {
                     });
                 }
                 const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1H', });
-                return res.status(200).json({ msg: 'sign in successfully', token: token, });
+                const fourteenDaysToSeconds = 24 * 60 * 60 * 14;
+                res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
+                res.setHeader('Access-Control-Allow-Credentials', 'true');
+                return res.status(200).json({ msg: 'sign in successfully!!!', });
             } catch (error) {
                 console.log(error);
                 return res.status(500).json({ msg: 'something went wrong', });
