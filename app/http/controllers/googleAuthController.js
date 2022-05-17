@@ -31,10 +31,10 @@ const googleAuthController = () => {
                 const fourteenDaysToSeconds = 24 * 60 * 60 * 14;
                 res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
                 res.setHeader('Access-Control-Allow-Credentials', 'true');
-                return res.status(200).json({ msg: 'sign in successfully!!!', });
+                return res.status(200).json({ message: 'sign in successfully!!!', });
             } catch (error) {
                 console.log(error);
-                return res.status(500).json({ msg: 'something went wrong', });
+                return res.status(500).json({ message: 'something went wrong', });
             }
         },
     };

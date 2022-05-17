@@ -26,7 +26,7 @@ describe('Auth test api', function () {
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-                expect(res.body).toHaveProperty('msg');
+                expect(res.body).toHaveProperty('message');
                 expect(res.headers).toHaveProperty('set-cookie');
                 done();
             });
@@ -43,7 +43,7 @@ describe('Auth test api', function () {
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
-                expect(res.body).toHaveProperty('msg');
+                expect(res.body).toHaveProperty('message');
                 expect(res.headers).toHaveProperty('set-cookie');
                 done();
             });

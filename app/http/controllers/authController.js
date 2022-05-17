@@ -12,7 +12,7 @@ const authController = () => {
                 await registerValidator.validateAsync({ fullname, email, password, confirmpassword, });
                 const user = await UserModel.findAll({ where: { email, }, });
                 if (user.length > 0) {
-                    return res.status(409).json({ msg: 'user already exist', });
+                    return res.status(409).json({ message: 'user already exist', });
                 } else {
                     const hasedPassword = await bcrypt.hash(password, 10);
                     const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1H', });
@@ -25,9 +25,9 @@ const authController = () => {
                         const fourteenDaysToSeconds = 24 * 60 * 60 * 14;
                         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');                      
-                        return res.status(200).json({ msg: 'you are registred successfully..', });
+                        return res.status(200).json({ message: 'you are registred successfully..', });
                     } catch (error) {
-                        return res.status(500).json({ msg: `${error} - something went wrong!!!`, });
+                        return res.status(500).json({ message: `${error} - something went wrong!!!`, });
                     }
                 }
             } catch (error) {
@@ -49,17 +49,17 @@ const authController = () => {
                             const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', });
                             res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
                             res.setHeader('Access-Control-Allow-Credentials', 'true');
-                            return res.status(200).json({ msg: 'logged in successfully!!!', });
+                            return res.status(200).json({ message: 'logged in successfully!!!', });
                         }
                         else {
                             return res.status(401).json({ err: 'wrong email or password', });
                         }
                     }
                     else {
-                        return res.status(401).json({ msg: 'you are not registerd..please register first', });
+                        return res.status(401).json({ message: 'you are not registerd..please register first', });
                     }
                 } catch (error) {
-                    return res.status(500).json({ msg: 'iternal server err', });
+                    return res.status(500).json({ message: 'iternal server err', });
                 }
             } catch (error) {
                 return res.status(400).json({ error: error.message, });
