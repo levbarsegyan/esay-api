@@ -7,6 +7,7 @@ import resolve from 'json-refs';
 import path from 'path';
 import db from './app/database/connection.js';
 import cors from 'cors';
+import errorHandler from './middlewares/errorHandler.js';
 const corsOption = {
     origin: [ 'http:
 };
@@ -50,4 +51,5 @@ const multiFileSwagger = (root) => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 })();
 initRoutes(app);
+app.use(errorHandler);
 export default app;
