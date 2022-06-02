@@ -52,7 +52,7 @@ const authController = () => {
                     return next(CustomErrorHandler.unAuthorized('you are not registerd..please register first'));
                 } else {
                     const encryptedPass = user[ 0 ].dataValues.password;
-                    const match = await bcrypt.compare(password, encryptedPass);
+                    const match = bcrypt.compare(password, encryptedPass);
                     if (!match) {
                         return next(CustomErrorHandler.wrongCredentials());
                     }
