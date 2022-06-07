@@ -28,9 +28,9 @@ const authController = () => {
                             email,
                             password: hasedPassword,
                         });
-                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}`);
+                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');
-                        return res.status(200).json({ message: 'you are registred successfully..', });
+                        return res.status(200).json({ message: 'you are registred successfully..', token: token, });
                     } catch (error) {
                         return next(CustomErrorHandler.internalError());
                     }
@@ -58,9 +58,9 @@ const authController = () => {
                     }
                     else {
                         const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', });
-                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}`);
+                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');
-                        return res.status(200).json({ message: 'logged in successfully!!!', });
+                        return res.status(200).json({ message: 'logged in successfully!!!', token: token, });
                     }
                 }
             } catch (error) {

@@ -2,6 +2,7 @@ import got from 'got';
 import UserModel from '../../database/models/User.js';
 import jwt from 'jsonwebtoken';
 import urls from '../../../config/urls.js';
+const FOURTEEN_DAYS_IN_SECONDS = 24 * 60 * 60 * 14;
 const githubAuthController = () => {
     return {
         async githubAuthRedirect(req, res) {
@@ -48,10 +49,9 @@ const githubAuthController = () => {
                     const token = jwt.sign({ email, }, process.env.tokensecret, {
                         expiresIn: '1H',
                     });
-                    const fourteenDaysToSeconds = 24 * 60 * 60 * 14;
-                    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${fourteenDaysToSeconds}`);
+                    res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
                     res.setHeader('Access-Control-Allow-Credentials', 'true');
-                    return res.status(200).json({ message: 'sign in successfully!!!', });
+                    return res.status(200).json({ message: 'sign in successfully!!!', token: token, });
                 } catch (error) {
                     console.log(error);
                     return res
