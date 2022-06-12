@@ -19,7 +19,7 @@ app.use(cors(corsOption));
 (async () => {
     try {
         await db.authenticate();
-        await db.sync();
+        await db.sync({ alter: true, });
         console.log('All models were synchronized successfully.');
         console.log(process.env.NODE_ENV);
     } catch (err) {

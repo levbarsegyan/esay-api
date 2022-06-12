@@ -9,5 +9,7 @@ const initRoutes = (app) => {
     app.post('/oauth/signin/github', githubAuthController().githubAuth);
     app.get('/oauth/redirect/google', googleAuthController().googleRedirect);
     app.post('/oauth/signin/google', googleAuthController().googleauth);
+    app.post('/forgot_password', authController().forgot_password);
+    app.post('/reset_password', authController().reset_password);
 };
 export default initRoutes;

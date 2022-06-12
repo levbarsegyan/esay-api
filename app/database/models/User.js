@@ -21,5 +21,13 @@ const User = db.define('users', {
         type: sequelize.STRING,
         defaultValue: 'easy collab',
     },
+    reset_password_token: {
+        type: sequelize.STRING,
+        allowNull: true,
+    },
+    reset_password_expires: {
+        type: sequelize.DATE,
+        allowNull: true,
+    },
 });
 export default User;

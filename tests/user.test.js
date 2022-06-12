@@ -37,7 +37,7 @@ describe('Auth test api', function () {
             .post('/login')
             .send({
                 email: 'myemail@gmail.com',
-                password: 'abcd1234',
+                password: 'abcd12345',
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
