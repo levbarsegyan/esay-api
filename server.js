@@ -1,13 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import initRoutes from './routes/api.js';
+import initRoutes from './routes/api';
 import swaggerUi from 'swagger-ui-express';
 import yamljs from 'yamljs';
 import resolve from 'json-refs';
 import path from 'path';
-import db from './app/database/connection.js';
+import db from './app/database/connection';
 import cors from 'cors';
-import errorHandler from './middlewares/errorHandler.js';
+import errorHandler from './middlewares/errorHandler';
 const corsOption = {
     origin: [ 'http:
 };

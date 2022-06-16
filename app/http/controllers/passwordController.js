@@ -1,83 +1,19 @@
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import registerValidator from '../validators/registerValidator';
-import loginValidator from '../validators/loginValidator';
-import UserModel from '../../database/models/User';
-import CustomErrorHandler from '../../../services/CustomErrorHnadler';
+import UserModel from '../../database/models/User.js';
+import CustomErrorHandler from '../../../services/CustomErrorHnadler.js';
 import crypto from 'crypto';
 import Sequelize from 'sequelize';
-import mailer from '../../../utils/mailer';
-const FOURTEEN_DAYS_IN_SECONDS = 24 * 60 * 60 * 14;
+import mailer from '../../../utils/mailer.js';
 const TWELVE_HOUR_IN_MILLISECONDS = 12 * 60 * 60 * 1000;
 const oldDateObj = new Date();
 const newDateObj = new Date();
 const expiryTime = newDateObj.setTime(oldDateObj.getTime() + TWELVE_HOUR_IN_MILLISECONDS);
 const Op = Sequelize.Op;
-function createResetToken() {
+const createResetToken = () => {
     return crypto.randomBytes(20).toString('hex');
-}
-const authController = () => {
+};
+const passwordController = () => {
     return {
-        async register (req, res, next) {
-            let { fullname, email, password, } = req.body;
-            email = email.trim();
-            try {
-                await registerValidator.validateAsync(req.body);
-            } catch(err) {
-                return next(err);
-            }
-            try {
-                const user = await UserModel.findAll({ where: { email, }, });
-                if (user.length) {
-                    return next(CustomErrorHandler.alreadyExist('user already exist'));
-                } else {
-                    const hasedPassword = await bcrypt.hash(password, 10);
-                    const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1H', });
-                    try {
-                        await UserModel.create({
-                            fullname,
-                            email,
-                            password: hasedPassword,
-                        });
-                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
-                        res.setHeader('Access-Control-Allow-Credentials', 'true');
-                        return res.status(200).json({ message: 'you are registred successfully..', token: token, });
-                    } catch (error) {
-                        return next(CustomErrorHandler.internalError());
-                    }
-                }
-            } catch (error) {
-                return next(CustomErrorHandler.internalError());
-            }
-        },
-        async login (req, res, next) {
-            const { email, password, } = req.body;
-            try {
-                await loginValidator.validateAsync(req.body);
-            } catch(err) {
-                return next(err);
-            }
-            try {
-                const user = await UserModel.findAll({ where: { email, }, });
-                if (!user.length) {
-                    return next(CustomErrorHandler.unAuthorized('you are not registerd..please register first'));
-                } else {
-                    const encryptedPass = user[ 0 ].dataValues.password;
-                    const match = await bcrypt.compare(password, encryptedPass);
-                    if (!match) {
-                        return next(CustomErrorHandler.wrongCredentials());
-                    }
-                    else {
-                        const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', });
-                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
-                        res.setHeader('Access-Control-Allow-Credentials', 'true');
-                        return res.status(200).json({ message: 'logged in successfully!!!', token: token, });
-                    }
-                }
-            } catch (error) {
-                return next(CustomErrorHandler.internalError());
-            }
-        },
         async forgot_password (req, res, next) {
             const { email, } = req.body;
             const token = createResetToken();
@@ -136,14 +72,14 @@ const authController = () => {
                             reset_password_expires: null,
                         };
                         try {
-                            user.update(values).then(async updated_user => {
+                            user.update(values).then(async (updated_user) => {
                                 const options = {
                                     toMail: updated_user.get('email'),
                                     username: updated_user.get('fullname').split(' ')[ 0 ],
                                 };
                                 const result = await mailer.sendPasswordConfirmEmail(options);
                                 if(result.accepted.length){
-                                    return res.status(200).json({ message: 'Password reset successfully!', });
+                                    return res.status(200).json({ message: 'Password Reset Successfully!', });
                                 } else {
                                     throw CustomErrorHandler.internalError();
                                 }
@@ -166,4 +102,4 @@ const authController = () => {
         },
     };
 };
-export default authController;
+export default passwordController;

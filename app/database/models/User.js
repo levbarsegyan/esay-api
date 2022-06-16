@@ -1,4 +1,4 @@
-import db from '../connection.js';
+import db from '../connection';
 import sequelize from 'sequelize';
 const User = db.define('users', {
     fullname: {

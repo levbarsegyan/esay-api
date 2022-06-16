@@ -4,6 +4,8 @@ import fs from 'fs/promises';
 import imgur from 'imgur';
 import request from 'supertest';
 import app from '../server';
+import User from '../app/database/models/User';
+import db from '../app/database/connection';
 puppeteer.use(StealthPlugin());
 let browser, page;
 const authCodes = { github: null, google: null, };
@@ -72,11 +74,16 @@ const signin = (done, provider) => {
         });
 };
 describe('Test OAuths Integration & API', () => {
-    beforeAll(async () => {
+    beforeAll(async (done) => {
+        await User.sync();
         await launchBrowser();
+        done();
     });
-    afterAll(async () => {
+    afterAll(async (done) => {
         await browser.close();
+        await db.drop();
+        await db.close();
+        done();
     });
     it('Should Redirect user to GitHub', async () => {
         try {
@@ -87,7 +94,7 @@ describe('Test OAuths Integration & API', () => {
     });
     it('Should sign in using Github auth code', (done) => {
         signin(done, 'github');
-    });
+    }, 10000);
     it('Should Redirect user to Google', async () => {
         try {
             const code = await getAuthCode('google');

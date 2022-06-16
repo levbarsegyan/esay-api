@@ -1,7 +1,7 @@
 import got from 'got';
-import UserModel from '../../database/models/User.js';
+import UserModel from '../../database/models/User';
 import jwt from 'jsonwebtoken';
-import urls from '../../../config/urls.js';
+import urls from '../../../config/urls';
 const FOURTEEN_DAYS_IN_SECONDS = 24 * 60 * 60 * 14;
 const githubAuthController = () => {
     return {
