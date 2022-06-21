@@ -60,7 +60,7 @@
                                     "$ref": "#/definitions/2XXResponse"
                                 },
                                 "example": {
-                                    "msg": "logged in successfully!!!",
+                                    "message": "logged in successfully!!!",
                                     "token": "fodijhsj32432n5lksfdj8w3498275"
                                 }
                             }
@@ -74,7 +74,7 @@
                                     "$ref": "#/definitions/4XXResponse"
                                 },
                                 "example": {
-                                    "msg": "internal server error"
+                                    "message": "internal server error"
                                 }
                             }
                         }
@@ -130,7 +130,7 @@
                                     "$ref": "#/definitions/2XXResponse"
                                 },
                                 "example": {
-                                    "msg": "you are registred successfully..",
+                                    "message": "you are registred successfully..",
                                     "token": "fodijhsj32432n5lksfdj8w3498275"
                                 }
                             }
@@ -144,7 +144,7 @@
                                     "$ref": "#/definitions/4XXResponse"
                                 },
                                 "example": {
-                                    "msg": "something went wrong!!!"
+                                    "message": "something went wrong!!!"
                                 }
                             }
                         }
@@ -170,7 +170,7 @@
         "2XXResponse": {
             "type": "object",
             "properties": {
-                "msg": {
+                "message": {
                     "type": "string"
                 },
                 "token": {
@@ -181,7 +181,7 @@
         "4XXResponse": {
             "type": "object",
             "properties": {
-                "msg/err/error": {
+                "message/err/error": {
                     "type": "string"
                 }
             }

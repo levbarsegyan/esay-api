@@ -4,3 +4,7 @@ LoginForm:
   $ref: ./LoginForm.yaml
 Oauth:
   $ref: ./Oauth.yaml
+ForgotPasswordForm:
+  $ref: ./ForgotPasswordForm.yaml
+ResetPasswordForm:
+  $ref: ./ResetPasswordForm.yaml

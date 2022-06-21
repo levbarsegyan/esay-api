@@ -2,6 +2,10 @@ login:
   $ref: ./login.yaml
 register:
   $ref: ./register.yaml
+forgot_password:
+  $ref: ./forgot_password.yaml
+reset_password:
+  $ref: ./reset_password.yaml
 redirect_github:
   $ref: ./redirect_github.yaml
 signin_github:

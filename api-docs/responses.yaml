@@ -5,9 +5,18 @@
       schema:
         type: object
         properties:
-          msg:
+          message:
             type: string
           token:
+            type: string
+200Response:
+  description: OK
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          message:
             type: string
 4XXResponse: 
   description: Bad Request
@@ -27,7 +36,7 @@
       schema:
         type: object
         properties:
-          msg:
+          message:
             type: string
       example:
-        msg: Something Went Wrong!
+        message: Something Went Wrong!

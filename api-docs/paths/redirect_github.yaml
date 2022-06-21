@@ -8,6 +8,6 @@ get:
     '200':
       description: OK
     '4XX':
-      $ref: "#/components/responses/4XXResponse"
+      $ref: '#/components/responses/4XXResponse'
     '5XX':
-      $ref: "#/components/responses/5XXResponse"
+      $ref: '#/components/responses/5XXResponse'
