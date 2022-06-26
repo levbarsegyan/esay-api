@@ -1,9 +1,9 @@
 {
-    "name": "project-managment-tool-api",
+    "name": "project-management-tool-api",
     "version": "1.0.0",
-    "description": "An open-source project managment tool built on Node Js",
+    "description": "An open-source project management tool built on Node Js",
     "main": "index.js",
-    "repository": "git@github.com:Real-Dev-Experience/project-managment-tool-api.git",
+    "repository": "git@github.com:Real-Dev-Experience/project-management-tool-api.git",
     "author": "Rakesh K <codersgyan@gmail.com>",
     "license": "MIT",
     "private": false,

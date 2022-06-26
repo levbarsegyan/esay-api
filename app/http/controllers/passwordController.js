@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../../database/models/User.js';
-import CustomErrorHandler from '../../../services/CustomErrorHnadler.js';
+import CustomErrorHandler from '../../../services/CustomErrorHandler.js';
 import crypto from 'crypto';
 import Sequelize from 'sequelize';
 import mailer from '../../../utils/mailer.js';

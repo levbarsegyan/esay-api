@@ -2,7 +2,7 @@ type: object
 properties:
   fullname:
     type: string
-    example: Jhon Doe
+    example: John Doe
   email:
     type: string
     example: email@gmail.com

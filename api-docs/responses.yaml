@@ -39,4 +39,4 @@
           message:
             type: string
       example:
-        message: Something Went Wrong!
+        message: Something went wrong.

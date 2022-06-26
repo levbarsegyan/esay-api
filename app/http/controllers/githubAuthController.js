@@ -51,16 +51,16 @@ const githubAuthController = () => {
                     });
                     res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
                     res.setHeader('Access-Control-Allow-Credentials', 'true');
-                    return res.status(200).json({ message: 'sign in successfully!!!', token: token, });
+                    return res.status(200).json({ message: 'Signed in successfully.', token: token, });
                 } catch (error) {
                     console.log(error);
                     return res
                         .status(500)
-                        .json({ message: 'something went wrong', });
+                        .json({ message: 'Something went wrong.', });
                 }
             } catch (e) {
                 console.error(e);
-                res.status(401).json({ err: 'invalid code!!!!', });
+                res.status(401).json({ err: 'Invalid code.', });
             }
         },
     };

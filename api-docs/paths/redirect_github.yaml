@@ -1,7 +1,7 @@
 get:
   tags:
   - user
-  summary: Redirect to github page for authorization
+  summary: Redirect to GitHub page for authorization
   description: ''
   operationId: oauthGithub
   responses:

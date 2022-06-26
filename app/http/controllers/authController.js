@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import registerValidator from '../validators/registerValidator';
 import loginValidator from '../validators/loginValidator';
 import UserModel from '../../database/models/User';
-import CustomErrorHandler from '../../../services/CustomErrorHnadler';
+import CustomErrorHandler from '../../../services/CustomErrorHandler';
+import crypto from 'crypto';
+import Sequelize from 'sequelize';
+import mailer from '../../../utils/mailer';
 const FOURTEEN_DAYS_IN_SECONDS = 24 * 60 * 60 * 14;
 const authController = () => {
     return {
@@ -18,19 +21,19 @@ const authController = () => {
             try {
                 const user = await UserModel.findAll({ where: { email, }, });
                 if (user.length) {
-                    return next(CustomErrorHandler.alreadyExist('user already exist'));
+                    return next(CustomErrorHandler.alreadyExist('User already exists'));
                 } else {
-                    const hasedPassword = await bcrypt.hash(password, 10);
+                    const hashedPassword = await bcrypt.hash(password, 10);
                     const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1H', });
                     try {
                         await UserModel.create({
                             fullname,
                             email,
-                            password: hasedPassword,
+                            password: hashedPassword,
                         });
                         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');
-                        return res.status(200).json({ message: 'you are registred successfully..', token: token, });
+                        return res.status(200).json({ message: 'You are registered successfully.', token: token, });
                     } catch (error) {
                         return next(CustomErrorHandler.internalError());
                     }
@@ -49,7 +52,7 @@ const authController = () => {
             try {
                 const user = await UserModel.findAll({ where: { email, }, });
                 if (!user.length) {
-                    return next(CustomErrorHandler.unAuthorized('you are not registerd..please register first'));
+                    return next(CustomErrorHandler.unAuthorized('You are not registered, please register first.'));
                 } else {
                     const encryptedPass = user[ 0 ].dataValues.password;
                     const match = await bcrypt.compare(password, encryptedPass);
@@ -60,7 +63,7 @@ const authController = () => {
                         const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', });
                         res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');
-                        return res.status(200).json({ message: 'logged in successfully!!!', token: token, });
+                        return res.status(200).json({ message: 'Logged in successfully.', token: token, });
                     }
                 }
             } catch (error) {

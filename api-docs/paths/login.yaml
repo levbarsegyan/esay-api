@@ -20,7 +20,7 @@ post:
     '200':
       $ref: '#/components/responses/2XXResponse'
       example:
-        message: logged in successfully!!!
+        message: Logged in successfully.
         token: fodijhsj32432n5lksfdj8w3498275
     '400':
       $ref: '#/components/responses/4XXResponse'

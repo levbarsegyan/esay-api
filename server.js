@@ -7,7 +7,7 @@ import resolve from 'json-refs';
 import path from 'path';
 import db from './app/database/connection';
 import cors from 'cors';
-import errorHandler from './middlewares/errorHandler';
+import errorHandler from './middleware/errorHandler';
 const corsOption = {
     origin: [ 'http:
 };

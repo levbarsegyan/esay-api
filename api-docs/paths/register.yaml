@@ -1,8 +1,8 @@
 post:
   tags:
   - user
-  summary: Register New user
-  description: Create new user in database.
+  summary: Register new user
+  description: Create new user in database
   operationId: registerUser
   consumes:
   - application/json
@@ -20,7 +20,7 @@ post:
     '200':
       $ref: '#/components/responses/2XXResponse' 
       example:
-        message: you are registered successfully..
+        message: You are registered successfully.
         token: fodijhsj32432n5lksfdj8w3498275
     '409':
       $ref: '#/components/responses/4XXResponse'

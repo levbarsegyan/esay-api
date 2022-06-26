@@ -1,7 +1,7 @@
 get:
   tags:
   - user
-  summary: Redirect to google page for authorization
+  summary: Redirect to Google page for authorization
   description: ''
   operationId: oauthGoogle
   responses:

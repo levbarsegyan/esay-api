@@ -1,5 +1,5 @@
 import { DEBUG_MODE } from '../config/app.js';
-import CustomErrorHandler from '../services/CustomErrorHnadler.js';
+import CustomErrorHandler from '../services/CustomErrorHandler.js';
 import Joi from 'joi';
 const errorHandler = (err, req, res, next) => {
     let statusCode = 500;
