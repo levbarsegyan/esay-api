@@ -9,7 +9,7 @@ import db from './app/database/connection';
 import cors from 'cors';
 import errorHandler from './middleware/errorHandler';
 const corsOption = {
-    origin: [ 'http:
+    origin: [ ' http:
 };
 const app = express();
 dotenv.config();

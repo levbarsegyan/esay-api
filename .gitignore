@@ -5,3 +5,4 @@ workspace.code-workspace
 package-lock.json
 *.cookie.json
 snapshots/*.*
+yarn.lock

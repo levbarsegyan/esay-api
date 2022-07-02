@@ -4,9 +4,6 @@ import registerValidator from '../validators/registerValidator';
 import loginValidator from '../validators/loginValidator';
 import UserModel from '../../database/models/User';
 import CustomErrorHandler from '../../../services/CustomErrorHandler';
-import crypto from 'crypto';
-import Sequelize from 'sequelize';
-import mailer from '../../../utils/mailer';
 const FOURTEEN_DAYS_IN_SECONDS = 24 * 60 * 60 * 14;
 const authController = () => {
     return {
@@ -15,7 +12,7 @@ const authController = () => {
             email = email.trim();
             try {
                 await registerValidator.validateAsync(req.body);
-            } catch(err) {
+            } catch (err) {
                 return next(err);
             }
             try {
@@ -46,7 +43,7 @@ const authController = () => {
             const { email, password, } = req.body;
             try {
                 await loginValidator.validateAsync(req.body);
-            } catch(err) {
+            } catch (err) {
                 return next(err);
             }
             try {

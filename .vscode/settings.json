@@ -1,6 +1,5 @@
 {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-        "editor.formatOnSave": true,
         "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
         "prettier.singleQuote": true,
         "editor.codeActionsOnSave": {
@@ -11,5 +10,8 @@
         ],
         "eslint.format.enable": true,
         "eslint.lintTask.enable": true,
-        "eslint.run": "onSave"
+        "eslint.run": "onSave",
+        "[javascript]": {
+                "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        }
 }
