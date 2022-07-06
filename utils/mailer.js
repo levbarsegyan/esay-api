@@ -33,7 +33,7 @@ const mailer = {
             template: 'forgot-password-email',
             subject: 'Password help has arrived!',
             context: {
-                url: `${origin}/auth/reset_password?token=${token}`,
+                url: `${origin}/reset_password?token=${token}`,
                 name: username,
             },
         };
