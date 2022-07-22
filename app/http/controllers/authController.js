@@ -8,7 +8,7 @@ const FOURTEEN_DAYS_IN_SECONDS = 24 * 60 * 60 * 14;
 const authController = () => {
     return {
         async register (req, res, next) {
-            let { fullname, email, password, } = req.body;
+            let { fullname, email, password, remember, } = req.body;
             email = email.trim();
             try {
                 await registerValidator.validateAsync(req.body);
@@ -28,7 +28,9 @@ const authController = () => {
                             email,
                             password: hashedPassword,
                         });
-                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
+                        const rememberCookie = remember ? `Max-Age=${FOURTEEN_DAYS_IN_SECONDS}` : '';
+                        const secureCookie = process.env.NODE_ENV == 'production' ? 'Secure' : '';
+                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${rememberCookie}; ${secureCookie}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');
                         return res.status(200).json({ message: 'You are registered successfully.', token: token, });
                     } catch (error) {
@@ -40,7 +42,7 @@ const authController = () => {
             }
         },
         async login (req, res, next) {
-            const { email, password, } = req.body;
+            const { email, password, remember, } = req.body;
             try {
                 await loginValidator.validateAsync(req.body);
             } catch (err) {
@@ -58,7 +60,9 @@ const authController = () => {
                     }
                     else {
                         const token = jwt.sign({ email, }, process.env.tokensecret, { expiresIn: '1h', });
-                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; Max-Age=${FOURTEEN_DAYS_IN_SECONDS}; ${process.env.NODE_ENV == 'production' ? 'Secure' : ''}`);
+                        const rememberCookie = remember ? `Max-Age=${FOURTEEN_DAYS_IN_SECONDS}` : '';
+                        const secureCookie = process.env.NODE_ENV == 'production' ? 'Secure' : '';
+                        res.setHeader('Set-Cookie', `token=${token}; HttpOnly; ${rememberCookie}; ${secureCookie}`);
                         res.setHeader('Access-Control-Allow-Credentials', 'true');
                         return res.status(200).json({ message: 'Logged in successfully.', token: token, });
                     }

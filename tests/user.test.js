@@ -21,6 +21,7 @@ describe('Auth test api', function () {
                 email: 'jhonedoe@gmail.com',
                 password: 'abcd12345',
                 confirmpassword: 'abcd12345',
+                remember: 'true',
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -39,6 +40,7 @@ describe('Auth test api', function () {
             .send({
                 email: 'jhonedoe@gmail.com',
                 password: 'abcd12345',
+                remember: 'true',
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -96,6 +98,7 @@ describe('Auth test api', function () {
             .send({
                 email: 'jhonedoe@gmail.com',
                 password: 'new_password',
+                remember: 'true',
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)

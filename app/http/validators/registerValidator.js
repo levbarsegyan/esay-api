@@ -4,5 +4,6 @@ const RegistervalidateScheama = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
     confirmpassword: Joi.valid(Joi.ref('password')),
+    remember: Joi.boolean().required(),
 });
 export default RegistervalidateScheama;
