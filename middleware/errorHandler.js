@@ -1,7 +1,7 @@
 import { DEBUG_MODE } from '../config/app.js';
 import CustomErrorHandler from '../services/CustomErrorHandler.js';
 import Joi from 'joi';
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {  
     let statusCode = 500;
     let data = {
         error: 'Internal server error',
@@ -14,6 +14,12 @@ const errorHandler = (err, req, res, next) => {
         };
     }
     if (err instanceof CustomErrorHandler) {
+        statusCode = err.status;
+        data = {
+            error: err.message,
+        };
+    }
+    if(err instanceof Error) {
         statusCode = err.status;
         data = {
             error: err.message,
