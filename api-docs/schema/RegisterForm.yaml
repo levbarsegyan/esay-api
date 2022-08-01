@@ -14,3 +14,6 @@ properties:
     type: string
     format: password
     example: abcd1234
+  remember:
+    type: boolean
+    example: true

@@ -6,3 +6,6 @@ properties:
   password:
     type: string
     example: yourpassword
+  remember:
+    type: boolean
+    example: true
