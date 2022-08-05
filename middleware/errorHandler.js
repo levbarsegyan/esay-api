@@ -7,6 +7,12 @@ const errorHandler = (err, req, res, next) => {
         error: 'Internal server error',
         ...(DEBUG_MODE === 'true' && { originalError: err.message, }),
     };
+    if(err instanceof Error) {
+        statusCode = err.status;
+        data = {
+            error: err.message,
+        };
+    }
     if (err instanceof Joi.ValidationError) {
         statusCode = 422;
         data = {
@@ -14,12 +20,6 @@ const errorHandler = (err, req, res, next) => {
         };
     }
     if (err instanceof CustomErrorHandler) {
-        statusCode = err.status;
-        data = {
-            error: err.message,
-        };
-    }
-    if(err instanceof Error) {
         statusCode = err.status;
         data = {
             error: err.message,
