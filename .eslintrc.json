@@ -91,7 +91,7 @@
     },
     "overrides": [
         {
-            "files": "tests/*.test.js",
+            "files": "__tests__/*.test.js",
             "rules": {
                 "node/no-unpublished-import": 0
             }

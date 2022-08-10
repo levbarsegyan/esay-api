@@ -1,7 +1,8 @@
-import app from '../server';
+require('esm')(module);
+import app from '../server.js';
 import request from 'supertest';
-import User from '../app/database/models/User';
-import db from '../app/database/connection';
+import User from '../database/models/User.js';
+import db from '../database/connection.js';
 import crypto from 'crypto';
 describe('Auth test api', function () {
     beforeAll(async (done) => {
@@ -10,55 +11,54 @@ describe('Auth test api', function () {
     });
     afterAll(async (done) => {
         await db.drop();
-        await db.close();
         done();
     });
-    it('should register a user', (done) => {
+    it('register a user', (done) => {
         request(app)
-            .post('/register')
+            .post('/api/user/register')
             .send({
                 fullname: 'Jhon Doe',
-                email: 'jhonedoe@gmail.com',
+                email: 'myemail@gmail.com',
                 password: 'abcd12345',
                 confirmpassword: 'abcd12345',
-                remember: 'true',
+                remember: true,
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
+                expect(res.body).toHaveProperty('success');
                 expect(res.body).toHaveProperty('message');
                 expect(res.body).toHaveProperty('token');
-                expect(res.headers).toHaveProperty('set-cookie');
                 done();
             });
     });
-    it('should login a user', (done) => {
+    it('login a user', (done) => {
         request(app)
-            .post('/login')
+            .post('/api/user/login')
             .send({
-                email: 'jhonedoe@gmail.com',
+                email: 'myemail@gmail.com',
                 password: 'abcd12345',
-                remember: 'true',
+                remember: true,
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(200)
             .end(function (err, res) {
                 if (err) return done(err);
+                expect(res.body).toHaveProperty('success');
                 expect(res.body).toHaveProperty('message');
                 expect(res.body).toHaveProperty('token');
-                expect(res.headers).toHaveProperty('set-cookie');
                 done();
             });
     });
     it('should send email for reset password link', (done) => {
         const mockToken = jest.spyOn(crypto, 'randomBytes').mockReturnValue('some_random_bytes');
         request(app)
-            .post('/forgot_password')
-            .send({  
-                email: 'jhonedoe@gmail.com',
+            .post('/api/user/forgot_password')
+            .send({
+                email: 'myemail@gmail.com',
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
@@ -66,6 +66,7 @@ describe('Auth test api', function () {
             .end(function (err, res) {
                 if (err) return done(err);
                 expect(res.statusCode).toBe(200);
+                expect(res.body).toHaveProperty('success');
                 expect(res.body).toHaveProperty('message');
                 expect(res.body.message).toBe('Kindly check your email for further instructions');
                 expect(mockToken).toHaveBeenCalled();
@@ -75,7 +76,7 @@ describe('Auth test api', function () {
     });
     it('should reset password', (done) => {
         request(app)
-            .post('/reset_password')
+            .post('/api/user/reset_password')
             .send({
                 'token': 'some_random_bytes',
                 'newPassword': 'new_password',
@@ -94,9 +95,9 @@ describe('Auth test api', function () {
     });
     it('should login again with new password', (done) => {
         request(app)
-            .post('/login')
+            .post('/api/user/login')
             .send({
-                email: 'jhonedoe@gmail.com',
+                email: 'myemail@gmail.com',
                 password: 'new_password',
                 remember: 'true',
             })

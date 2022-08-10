@@ -1,31 +1,23 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import initRoutes from './routes/api';
+dotenv.config();
+const app = express();
 import swaggerUi from 'swagger-ui-express';
 import yamljs from 'yamljs';
 import resolve from 'json-refs';
 import path from 'path';
-import db from './app/database/connection';
+import db from './database/connection.js';
+import userRouter from './routes/userApi.js';
 import cors from 'cors';
-import errorHandler from './middleware/errorHandler';
 const corsOption = {
     origin: [ ' http:
 };
-const app = express();
 dotenv.config();
 app.use(express.urlencoded({ extended: true, }));
 app.use(express.json());
 app.use(cors(corsOption));
-(async () => {
-    try {
-        await db.authenticate();
-        await db.sync({ alter: true, });
-        console.log('All models were synchronized successfully.');
-        console.log(process.env.NODE_ENV);
-    } catch (err) {
-        console.log('Error: ' + err);
-    }
-})();
+app.use(express.urlencoded({ extended: true, }));
+app.use(express.json());
 const multiFileSwagger = (root) => {
     const options = {
         filter: [ 'relative', 'remote' ],
@@ -50,6 +42,24 @@ const multiFileSwagger = (root) => {
     );
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 })();
-initRoutes(app);
-app.use(errorHandler);
+app.use('/api/user', userRouter);
+app.use((err, req, res, next) => {
+    err.statusCode = err.statusCode || 500;
+    err.status = err.status || 'error';
+    res.status(err.statusCode).json({
+        success: false,
+        status: err.status,
+        message: err.message,
+        error: err,
+    });
+});
+(async () => {
+    try { await db.authenticate();
+        await db.sync();
+        console.log('All models were synchronized successfully.');
+        console.log(process.env.NODE_ENV);
+    } catch (err) {
+        console.log('Error: ' + err);
+    }
+})();
 export default app;
