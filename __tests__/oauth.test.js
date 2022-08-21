@@ -58,7 +58,7 @@ const getAuthCode = async (provider) => {
 };
 const signin = (done, provider) => {
     request(app)
-        .post(`/oauth/signin/${provider}`)
+        .post(`/api/user/oauth/signin/${provider}`)
         .send({
             code: authCodes[ provider ],
         })
@@ -75,7 +75,7 @@ const signin = (done, provider) => {
 };
 describe('Test OAuths Integration & API', () => {
     beforeAll(async (done) => {
-        await User.sync();
+        await User.sync(); 
         await launchBrowser();
         done();
     });

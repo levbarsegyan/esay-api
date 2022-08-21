@@ -26,6 +26,7 @@ const githubAuth = catchAsync(async (req, res, next) => {
     const username = getuser.name;
     const userid = getuser.id;
     const email = getuserEmail[ 0 ].email;
+    const remember = true;
     try {
         const isUserExist = await UserModel.findAll({ where: { userid: userid.toString(), }, });
         if (isUserExist.length == 0) {
@@ -36,7 +37,7 @@ const githubAuth = catchAsync(async (req, res, next) => {
                 provider: 'github auth',
             });
         }
-        sendToken(email, remember = true, 'Signed in successfully.', res);
+        sendToken(email, remember, 'Signed in successfully.', res);
     } catch (error) {
         next(new AppError('Internal server error', 500));
     }

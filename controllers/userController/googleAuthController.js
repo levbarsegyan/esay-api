@@ -17,6 +17,7 @@ const googleAuth = catchAsync(async(req, res, next)=>{
     const username = userinfo.name;
     const email = userinfo.email;
     const userid = userinfo.sub;
+    const remember = true;
     try {
         const isUserExist = await UserModel.findAll({ where: { userid: userid.toString(), }, });
         if (isUserExist.length == 0) {
@@ -27,7 +28,7 @@ const googleAuth = catchAsync(async(req, res, next)=>{
                 provider: 'google auth',
             });
         }
-        sendToken(email, remember = true, 'You are registered successfully.', res);
+        sendToken(email, remember, 'You are registered successfully.', res);
     } catch (error) {
         console.log(error);
         return next(new AppError('Something went wrong.', 500));

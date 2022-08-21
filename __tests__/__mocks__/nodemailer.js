@@ -12,3 +12,11 @@ const createTransport = function createTransport(options) {
 };
 nodemailer.createTransport = createTransport;
 module.exports = nodemailer;
+describe('Verify nodemailer is mocked', function () {
+    it('should mock nodemailer module', (done) => {
+        const smtpTransport = nodemailer.createTransport();
+        const response = smtpTransport.sendMail();
+        expect(response).toHaveProperty('accepted');
+        done();
+    });
+});
