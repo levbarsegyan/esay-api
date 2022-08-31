@@ -4,7 +4,7 @@ tags:
   description: Operations about user
 servers:
 - url: https://api.realdev.in/
-- url: http://localhost:5000/
+- url: http://localhost:5000/api/user
 schemes:
 - https
 - http

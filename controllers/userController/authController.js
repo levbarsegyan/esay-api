@@ -1,48 +1,45 @@
-import bcrypt from 'bcrypt';
 import catchAsync from './../../utils/catchAsync';
-import AppError from './../../utils/appError.js';
-import sendToken from './../../utils/sendToken.js';
-import registerValidator from './../../validators/registerValidator.js';
-import loginValidator from './../../validators/loginValidator.js';
-import UserModel from './../../database/models/User.js'; 
-const register = catchAsync(async(req, res, next)=>{
-    let { fullname, email, password, remember, } = req.body;
-    email = email.trim();
-    await registerValidator.validateAsync({ fullname, email, password, remember, });
-    const user = await UserModel.findAll({ where: { email, }, });
-    console.log(user);
-    if (user.length){
-        return next(new AppError('User already exists', 409));
-    } else {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        try {
-            await UserModel.create({
-                fullname,
-                email,
-                password: hashedPassword,
-            });
-            sendToken(email, remember, 'You are registered successfully.', res);
-        } catch (error) {
-            return next(new AppError('Something went wrong', 500));
-        }
+import UserModel from '../../models/User.js';
+import AuthService from '../../services/auth';
+const FOURTEEN_DAYS_IN_MILLISECONDS = 24 * 60 * 60 * 14 * 1000;
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production' ? true : false,
+};
+const register = catchAsync(async (req, res, next) => {
+    const isRemember = req.body.remember;
+    const authServiceInstance = new AuthService(UserModel);
+    const token = await authServiceInstance.Signup(req.body, next);
+    if(isRemember){
+        cookieOptions.maxAge = FOURTEEN_DAYS_IN_MILLISECONDS;
+    } else{
+        cookieOptions.maxAge = 0;
     }
+    res.cookie('token', token, cookieOptions);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    const message = 'Registered successfuly!';
+    return res.status(200).json({
+        success: true,
+        message,
+        token,
+    });
 });
-const login = catchAsync(async(req, res, next)=>{
-    const { email, password, remember, } = req.body;
-    await loginValidator.validateAsync({ email, password, remember, });
-    const user = await UserModel.findAll({ where: { email, }, });
-    if(user.length > 0){
-        const incriptPass = user[ 0 ].dataValues.password;
-        const comp = await bcrypt.compare(password, incriptPass);
-        if(comp){
-            sendToken(email, remember, 'logged in successfully!!!', res);
-        }
-        else{
-            return next(new AppError('Incorrect E-mail or password', 401));
-        }
+const login = catchAsync(async (req, res, next) => {
+    const isRemember = req.body.remember;
+    const authServiceInstance = new AuthService(UserModel);
+    const token = await authServiceInstance.Signin(req.body, next);
+    if(isRemember){
+        cookieOptions.maxAge = FOURTEEN_DAYS_IN_MILLISECONDS;
+    } else{
+        cookieOptions.maxAge = 0;
     }
-    else{
-        return next(new AppError('User does not exists', 404));
-    }
+    res.cookie('token', token, cookieOptions);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    const message = 'Logged successfuly!';
+    return res.status(200).json({
+        success: true,
+        message,
+        token,
+    });
 });
 export { register, login };

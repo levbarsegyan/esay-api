@@ -2,7 +2,7 @@ import got from 'got';
 import catchAsync from './../../utils/catchAsync';
 import AppError from './../../utils/appError.js';
 import sendToken from './../../utils/sendToken.js';
-import UserModel from './../../database/models/User.js'; 
+import UserModel from '../../models/User.js'; 
 import urls from './../../config/urls';
 const githubAuthRedirect = catchAsync(async (req, res) => {
     return res.redirect(urls.githubAuth.GithubAuthScreenUrl);
