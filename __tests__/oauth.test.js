@@ -4,15 +4,15 @@ import fs from 'fs/promises';
 import imgur from 'imgur';
 import request from 'supertest';
 import app from '../server';
-import User from '../database/models/User';
+import User from '../models/User';
 import db from '../database/connection';
 puppeteer.use(StealthPlugin());
 let browser, page;
-const authCodes = { github: null, google: null, };
+const authCodes = { github: null, google: null };
 const launchBrowser = async () => {
     browser = await puppeteer.launch({
-        args: [ '--—headless', '--no-sandbox' ],
-        ignoreDefaultArgs: [ '--enable-automation' ],
+        args: ['--—headless', '--no-sandbox'],
+        ignoreDefaultArgs: ['--enable-automation'],
     });
 };
 const takeScreenshot = async (provider) => {
@@ -42,7 +42,7 @@ const getAuthCode = async (provider) => {
             await req.abort();
             const url = new URL(req.url());
             const code = url.searchParams.get('code');
-            authCodes[ provider ] = code;
+            authCodes[provider] = code;
             console.log('Code for ', provider, code);
             return code;
         } else {
@@ -60,7 +60,7 @@ const signin = (done, provider) => {
     request(app)
         .post(`/api/user/oauth/signin/${provider}`)
         .send({
-            code: authCodes[ provider ],
+            code: authCodes[provider],
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -75,7 +75,7 @@ const signin = (done, provider) => {
 };
 describe('Test OAuths Integration & API', () => {
     beforeAll(async (done) => {
-        await User.sync(); 
+        await User.sync();
         await launchBrowser();
         done();
     });

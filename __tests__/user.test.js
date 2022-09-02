@@ -1,7 +1,7 @@
 require('esm')(module);
 import app from '../server.js';
 import request from 'supertest';
-import User from '../database/models/User.js';
+import User from '../models/User.js';
 import db from '../database/connection.js';
 import crypto from 'crypto';
 describe('Auth test api', function () {
@@ -54,7 +54,9 @@ describe('Auth test api', function () {
             });
     });
     it('should send email for reset password link', (done) => {
-        const mockToken = jest.spyOn(crypto, 'randomBytes').mockReturnValue('some_random_bytes');
+        const mockToken = jest
+            .spyOn(crypto, 'randomBytes')
+            .mockReturnValue('some_random_bytes');
         request(app)
             .post('/api/user/forgot_password')
             .send({
@@ -68,7 +70,9 @@ describe('Auth test api', function () {
                 expect(res.statusCode).toBe(200);
                 expect(res.body).toHaveProperty('success');
                 expect(res.body).toHaveProperty('message');
-                expect(res.body.message).toBe('Kindly check your email for further instructions');
+                expect(res.body.message).toBe(
+                    'Kindly check your email for further instructions'
+                );
                 expect(mockToken).toHaveBeenCalled();
                 jest.spyOn(crypto, 'randomBytes').mockRestore();
                 done();
@@ -78,9 +82,9 @@ describe('Auth test api', function () {
         request(app)
             .post('/api/user/reset_password')
             .send({
-                'token': 'some_random_bytes',
-                'newPassword': 'new_password',
-                'verifyPassword': 'new_password',
+                token: 'some_random_bytes',
+                newPassword: 'new_password',
+                verifyPassword: 'new_password',
             })
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
