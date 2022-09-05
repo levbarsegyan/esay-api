@@ -9,6 +9,7 @@ import path from 'path';
 import db from './database/connection.js';
 import userRouter from './routes/userApi.js';
 import cors from 'cors';
+import { errors } from 'celebrate';
 const corsOption = {
     origin: [ ' http:
 };
@@ -43,6 +44,7 @@ const multiFileSwagger = (root) => {
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 })();
 app.use('/api/user', userRouter);
+app.use(errors());
 app.use((err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
