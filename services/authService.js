@@ -12,7 +12,7 @@ export default class AuthService {
         this.userModel = userModel;
         this.AppError = AppError;
     }
-    async Signup(userData, next) {
+    async Signup(userData) {
         let { fullname, email, password, userid, provider, } = userData;
         email = email.trim();
         const user = await this.userModel.findAll({ where: { email, }, });
@@ -20,7 +20,7 @@ export default class AuthService {
             if (provider) {
                 return this.generateToken(email);
             } else {
-                return next(new this.AppError('User already exists', 409));
+                throw (new this.AppError('User already exists', 409));
             }
         } else {
             try {
@@ -41,11 +41,11 @@ export default class AuthService {
                 }
                 return this.generateToken(email);
             } catch (error) {
-                return next(new this.AppError('Something went wrong', 500));
+                throw (new this.AppError('Something went wrong', 500));
             }
         }
     }
-    async Signin(userData, next) {
+    async Signin(userData) {
         const { email, password, } = userData;
         const user = await this.userModel.findAll({ where: { email, }, });
         if (user.length > 0) {
@@ -54,16 +54,16 @@ export default class AuthService {
             if (comp) {
                 return this.generateToken(email);
             } else {
-                return next(new this.AppError('Incorrect E-mail or password', 401));
+                throw (new this.AppError('Incorrect E-mail or password', 401));
             }
         } else {
-            return next(new this.AppError('User does not exists', 404));
+            throw (new this.AppError('User does not exists', 404));
         }
     }
-    async ForgotPassword(email, next){
+    async ForgotPassword(email){
         const user = await this.userModel.findOne({ where: { email: email, }, });
         if(!user){
-            return next(new this.AppError('No user exists with this email-address', 404));
+            throw (new this.AppError('No user exists with this email-address', 404));
         }
         try {
             const token = this.generateRandomToken();
@@ -74,10 +74,10 @@ export default class AuthService {
             });
             return { user, token, };
         } catch (error) {
-            return next(new this.AppError('Something went wrong!', 500));
+            throw (new this.AppError('Something went wrong!', 500));
         }
     }
-    async ResetPassword(data, next){
+    async ResetPassword(data){
         const user = await this.userModel.findOne({
             where: {
                 reset_password_token: data.token,
@@ -87,10 +87,10 @@ export default class AuthService {
             },
         });
         if(!user){
-            return next(new this.AppError('Password reset token is invalid or has expired.', 401));
+            throw (new this.AppError('Password reset token is invalid or has expired.', 401));
         }
         if (data.newPassword !== data.verifyPassword){
-            return next(new this.AppError('Passwords does not match', 400));
+            throw (new this.AppError('Passwords does not match', 400));
         }
         let values = {
             password: bcrypt.hashSync(data.newPassword, 10),
@@ -100,7 +100,7 @@ export default class AuthService {
         try {
             return await user.update(values);
         } catch (error) {
-            return next(new this.AppError('Something went wrong', 500));
+            throw (new this.AppError('Something went wrong', 500));
         }
     }
     generateRandomToken() {

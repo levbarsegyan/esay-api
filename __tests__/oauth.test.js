@@ -3,16 +3,18 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import fs from 'fs/promises';
 import imgur from 'imgur';
 import request from 'supertest';
-import app from '../server';
+import express from 'express';
+import loaders from '../loaders';
 import User from '../models/User';
 import db from '../database/connection';
+const app = express();
 puppeteer.use(StealthPlugin());
 let browser, page;
-const authCodes = { github: null, google: null };
+const authCodes = { github: null, google: null, };
 const launchBrowser = async () => {
     browser = await puppeteer.launch({
-        args: ['--—headless', '--no-sandbox'],
-        ignoreDefaultArgs: ['--enable-automation'],
+        args: [ '--—headless', '--no-sandbox' ],
+        ignoreDefaultArgs: [ '--enable-automation' ],
     });
 };
 const takeScreenshot = async (provider) => {
@@ -42,7 +44,7 @@ const getAuthCode = async (provider) => {
             await req.abort();
             const url = new URL(req.url());
             const code = url.searchParams.get('code');
-            authCodes[provider] = code;
+            authCodes[ provider ] = code;
             console.log('Code for ', provider, code);
             return code;
         } else {
@@ -58,9 +60,9 @@ const getAuthCode = async (provider) => {
 };
 const signin = (done, provider) => {
     request(app)
-        .post(`/api/user/oauth/signin/${provider}`)
+        .post(`/api/auth/oauth/signin/${provider}`)
         .send({
-            code: authCodes[provider],
+            code: authCodes[ provider ],
         })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -75,6 +77,7 @@ const signin = (done, provider) => {
 };
 describe('Test OAuths Integration & API', () => {
     beforeAll(async (done) => {
+        await loaders({ expressApp: app, });
         await User.sync();
         await launchBrowser();
         done();
