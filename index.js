@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 5000;
     const app = express();
     await loaders({ expressApp: app, });
     app.listen(PORT, () => {
+        console.log('[APP]');
         console.log(`> Server listening on port: ${PORT} <`);
         console.log(`> API Docs: http:
     }).on('error', err => {

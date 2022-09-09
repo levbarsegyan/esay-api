@@ -1,4 +1,4 @@
-import db from '../database/connection';
+import { db } from '../loaders/sequelize';
 import sequelize from 'sequelize';
 const project = db.define('projects', {
     id: {

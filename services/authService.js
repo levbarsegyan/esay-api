@@ -18,7 +18,7 @@ export default class AuthService {
         const user = await this.userModel.findAll({ where: { email, }, });
         if (user.length) {
             if (provider) {
-                return this.generateToken(email);
+                return this.generateJWTToken(email);
             } else {
                 throw (new this.AppError('User already exists', 409));
             }
@@ -39,7 +39,7 @@ export default class AuthService {
                         password: hashedPassword,
                     });
                 }
-                return this.generateToken(email);
+                return this.generateJWTToken(email);
             } catch (error) {
                 throw (new this.AppError('Something went wrong', 500));
             }
@@ -50,9 +50,9 @@ export default class AuthService {
         const user = await this.userModel.findAll({ where: { email, }, });
         if (user.length > 0) {
             const encryptPass = user[ 0 ].dataValues.password;
-            const comp = await bcrypt.compare(password, encryptPass);
-            if (comp) {
-                return this.generateToken(email);
+            const isPasswordMatch = await bcrypt.compare(password, encryptPass);
+            if (isPasswordMatch) {
+                return this.generateJWTToken(email);
             } else {
                 throw (new this.AppError('Incorrect E-mail or password', 401));
             }
@@ -89,9 +89,6 @@ export default class AuthService {
         if(!user){
             throw (new this.AppError('Password reset token is invalid or has expired.', 401));
         }
-        if (data.newPassword !== data.verifyPassword){
-            throw (new this.AppError('Passwords does not match', 400));
-        }
         let values = {
             password: bcrypt.hashSync(data.newPassword, 10),
             reset_password_token: null,
@@ -106,7 +103,7 @@ export default class AuthService {
     generateRandomToken() {
         return crypto.randomBytes(20).toString('hex');
     }
-    generateToken(email) {
+    generateJWTToken(email) {
         return jwt.sign({ email, }, process.env.tokensecret, {
             expiresIn: '1H',
         });

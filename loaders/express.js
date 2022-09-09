@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import routes from '../api';
 import cors from 'cors';
-import { errors } from 'celebrate';
 export default ({ app, }) => {
     const corsOption = {
         origin: [ ' http:
@@ -15,8 +14,7 @@ export default ({ app, }) => {
     app.use(express.urlencoded({ extended: true, }));
     app.use(express.json());
     app.use('/api', routes());
-    app.use(errors());
-    app.use((err, req, res, next) => {
+    app.use((err, req, res, next) => {        
         err.statusCode = err.statusCode || 500;
         err.status = err.status || 'error';
         res.status(err.statusCode).json({

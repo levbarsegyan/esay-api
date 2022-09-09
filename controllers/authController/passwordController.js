@@ -6,7 +6,7 @@ import AuthService from '../../services/authService';
 const forgotPassword = catchAsync(async(req, res, next)=>{
     const { email, } = req.body;
     const authServiceInstance = new AuthService(UserModel, AppError);
-    const { user, token, } = await authServiceInstance.ForgotPassword(email, next);
+    const { user, token, } = await authServiceInstance.ForgotPassword(email);
     const options = {
         toMail: await user.get('email'),
         origin: `${req.protocol}:
@@ -25,25 +25,21 @@ const forgotPassword = catchAsync(async(req, res, next)=>{
     }
 });
 const resetPassword = catchAsync(async(req, res, next)=>{
-    try {
-        const authServiceInstance = new AuthService(UserModel, AppError);
-        const updatedUser = await authServiceInstance.ResetPassword(req.body, next);
-        const options = {
-            toMail: updatedUser.get('email'),
-            username: updatedUser.get('fullname').split(' ')[ 0 ],
-        };
-        const MailerServiceInstance = new MailerService();
-        const isSuccess = await MailerServiceInstance.sendPasswordConfirmEmail(options);
-        if(isSuccess){
-            return res.status(200).json({ 
-                success: true,
-                message: 'Password Reset Successfully!',
-            });
-        }
-    } catch (error) {
-        return res.json({
-            error,
+    const authServiceInstance = new AuthService(UserModel, AppError);
+    const updatedUser = await authServiceInstance.ResetPassword(req.body);
+    const options = {
+        toMail: updatedUser.get('email'),
+        username: updatedUser.get('fullname').split(' ')[ 0 ],
+    };
+    const MailerServiceInstance = new MailerService();
+    const isSuccess = await MailerServiceInstance.sendPasswordConfirmEmail(options);
+    if(isSuccess){
+        return res.status(200).json({ 
+            success: true,
+            message: 'Password Reset Successfully!',
         });
+    } else {
+        return next(new AppError('There was an error sending mail. Please try again later', 500));
     }
 });
 export { forgotPassword, resetPassword };

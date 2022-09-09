@@ -6,7 +6,7 @@ import request from 'supertest';
 import express from 'express';
 import loaders from '../loaders';
 import User from '../models/User';
-import db from '../database/connection';
+import { db } from '../loaders/sequelize';
 const app = express();
 puppeteer.use(StealthPlugin());
 let browser, page;

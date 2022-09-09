@@ -3,7 +3,7 @@ import express from 'express';
 import loaders from '../loaders';
 import request from 'supertest';
 import User from '../models/User.js';
-import db from '../database/connection.js';
+import { db } from '../loaders/sequelize';
 import crypto from 'crypto';
 const app = express();
 describe('Auth test api', function () {
