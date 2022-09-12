@@ -1,14 +1,7 @@
-import express from 'express';
-import loaders from './loaders';
+import app from './server.js';
 const PORT = process.env.PORT || 5000;
-(async () => {
-    const app = express();
-    await loaders({ expressApp: app, });
-    app.listen(PORT, () => {
-        console.log('[APP]');
-        console.log(`> Server listening on port: ${PORT} <`);
-        console.log(`> API Docs: http:
-    }).on('error', err => {
-        throw new Error(err);
-    });
-})();
+app.listen(PORT, () =>
+    console.log(
+        `Listening on port ${PORT} 👌🏾 \nLet's build something awesome 🔥`
+    )
+);

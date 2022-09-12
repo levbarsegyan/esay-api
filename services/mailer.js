@@ -24,7 +24,7 @@ const handlebarsOptions = {
     extName: '.html',
 };
 smtpTransport.use('compile', hbs(handlebarsOptions));
-export default class MailerService {
+const mailer = {
     async sendPasswordResetEmail(options){
         let { toMail, origin, token, username, } = options;
         const data = {
@@ -38,11 +38,8 @@ export default class MailerService {
             },
         };
         const mail = await smtpTransport.sendMail(data);
-        if(mail.accepted.length){
-            return true;
-        }
-        return false;
-    }
+        return mail;
+    },
     async sendPasswordConfirmEmail(options){
         let { toMail, username, } = options;
         const data = {
@@ -55,9 +52,7 @@ export default class MailerService {
             },
         };
         const mail = await smtpTransport.sendMail(data);
-        if(mail.accepted.length){
-            return true;
-        }
-        return false;
-    }
-}
+        return mail;
+    },
+};
+export default mailer;
