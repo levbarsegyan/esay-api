@@ -3,9 +3,11 @@ import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 import fs from 'fs/promises';
 import imgur from 'imgur';
 import request from 'supertest';
-import app from '../server';
-import User from '../database/models/User';
-import db from '../database/connection';
+import express from 'express';
+import loaders from '../loaders';
+import User from '../models/User';
+import { db } from '../loaders/sequelize';
+const app = express();
 puppeteer.use(StealthPlugin());
 let browser, page;
 const authCodes = { github: null, google: null, };
@@ -58,7 +60,7 @@ const getAuthCode = async (provider) => {
 };
 const signin = (done, provider) => {
     request(app)
-        .post(`/api/user/oauth/signin/${provider}`)
+        .post(`/api/auth/oauth/signin/${provider}`)
         .send({
             code: authCodes[ provider ],
         })
@@ -75,7 +77,8 @@ const signin = (done, provider) => {
 };
 describe('Test OAuths Integration & API', () => {
     beforeAll(async (done) => {
-        await User.sync(); 
+        await loaders({ expressApp: app, });
+        await User.sync();
         await launchBrowser();
         done();
     });

@@ -1,4 +1,4 @@
-import db from '../connection';
+import { db } from '../loaders/sequelize';
 import sequelize from 'sequelize';
 const task = db.define('tasks', {
     id: {
