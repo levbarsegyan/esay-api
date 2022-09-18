@@ -2,10 +2,9 @@ import { container, setup } from '../../loaders/awilix';
 setup();
 console.log('[MODULE] Awilix Initialized.');
 import { Router } from 'express';
-import * as passwordController from '../../controllers/authController/passwordController';
 import * as schemaValidator from '../middlewares/schemaValidator';
-console.log('inside auth.js');
 const authController = container.resolve('AuthController');
+const passwordController = container.resolve('PasswordController');
 const route = Router();
 export default (app) => {
     app.use('/auth', route);

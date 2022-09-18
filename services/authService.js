@@ -2,15 +2,15 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import Sequelize from 'sequelize';
+import AppError from '../utils/appError';
 const Op = Sequelize.Op;
 const TWELVE_HOUR_IN_MILLISECONDS = 12 * 60 * 60 * 1000;
 const oldDateObj = new Date();
 const newDateObj = new Date();
 const expiryTime = newDateObj.setTime(oldDateObj.getTime() + TWELVE_HOUR_IN_MILLISECONDS);
 export default class AuthService {
-    constructor({ UserModel, AppError, }) {
+    constructor({ UserModel, }) {
         this.userModel = UserModel;
-        this.AppError = AppError;
     }
     async Signup(userData) {
         let { fullname, email, password, userid, provider, } = userData;
@@ -20,7 +20,7 @@ export default class AuthService {
             if (provider) {
                 return this.generateJWTToken(email);
             } else {
-                throw (new this.AppError('User already exists', 409));
+                throw (new AppError('User already exists', 409));
             }
         } else {
             try {
@@ -41,7 +41,7 @@ export default class AuthService {
                 }
                 return this.generateJWTToken(email);
             } catch (error) {
-                throw (new this.AppError('Something went wrong', 500));
+                throw (new AppError('Something went wrong', 500));
             }
         }
     }
@@ -54,16 +54,16 @@ export default class AuthService {
             if (isPasswordMatch) {
                 return this.generateJWTToken(email);
             } else {
-                throw (new this.AppError('Incorrect E-mail or password', 401));
+                throw (new AppError('Incorrect E-mail or password', 401));
             }
         } else {
-            throw (new this.AppError('User does not exists', 404));
+            throw (new AppError('User does not exists', 404));
         }
     }
     async ForgotPassword(email){
         const user = await this.userModel.findOne({ where: { email: email, }, });
         if(!user){
-            throw (new this.AppError('No user exists with this email-address', 404));
+            throw (new AppError('No user exists with this email-address', 404));
         }
         try {
             const token = this.generateRandomToken();
@@ -74,7 +74,7 @@ export default class AuthService {
             });
             return { user, token, };
         } catch (error) {
-            throw (new this.AppError('Something went wrong!', 500));
+            throw (new AppError('Something went wrong!', 500));
         }
     }
     async ResetPassword(data){
@@ -87,7 +87,7 @@ export default class AuthService {
             },
         });
         if(!user){
-            throw (new this.AppError('Password reset token is invalid or has expired.', 401));
+            throw (new AppError('Password reset token is invalid or has expired.', 401));
         }
         let values = {
             password: bcrypt.hashSync(data.newPassword, 10),
@@ -97,7 +97,7 @@ export default class AuthService {
         try {
             return await user.update(values);
         } catch (error) {
-            throw (new this.AppError('Something went wrong', 500));
+            throw (new AppError('Something went wrong', 500));
         }
     }
     generateRandomToken() {

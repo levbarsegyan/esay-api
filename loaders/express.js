@@ -1,7 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
-console.log('inside express');
 import routes from '../api';
 import cors from 'cors';
 export default ({ app, }) => {
