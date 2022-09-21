@@ -9,8 +9,9 @@ const oldDateObj = new Date();
 const newDateObj = new Date();
 const expiryTime = newDateObj.setTime(oldDateObj.getTime() + TWELVE_HOUR_IN_MILLISECONDS);
 export default class AuthService {
-    constructor({ UserModel, }) {
+    constructor({ UserModel, env, }) {
         this.userModel = UserModel;
+        this.env = env;
     }
     async Signup(userData) {
         let { fullname, email, password, userid, provider, } = userData;
@@ -104,7 +105,7 @@ export default class AuthService {
         return crypto.randomBytes(20).toString('hex');
     }
     generateJWTToken(email) {
-        return jwt.sign({ email, }, process.env.tokensecret, {
+        return jwt.sign({ email, }, this.env.tokensecret, {
             expiresIn: '1H',
         });
     }

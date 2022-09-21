@@ -8,6 +8,13 @@ import UserModel from '../models/User';
 const container = createContainer({
     injectionMode: InjectionMode.PROXY,
 });
+const env = {
+    MAILER_EMAIL_ID: process.env.MAILER_EMAIL_ID,
+    MAILER_PASSWORD: process.env.MAILER_PASSWORD,
+    MAILER_HOST: process.env.MAILER_HOST,
+    NODE_ENV: process.env.NODE_ENV,
+    tokensecret: process.env.tokensecret,
+};
 const setup = () => {
     container.register({
         AuthController: asClass(AuthController),
@@ -16,6 +23,7 @@ const setup = () => {
         MailerService: asClass(MailerService),
         OAuthService: asClass(OAuthService),
         UserModel: asValue(UserModel),
+        env: asValue(env),
     });
 };
 export {

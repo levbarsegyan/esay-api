@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import loaders from './loaders';
 const PORT = process.env.PORT || 5000;

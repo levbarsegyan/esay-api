@@ -16,7 +16,6 @@ export default class PasswordController {
             token: token,
             username: await user.get('fullname').split(' ')[ 0 ],
         };
-        console.log(options);
         try {
             const isSuccess = await this.mailerService.sendPasswordResetEmail(options);
             if(isSuccess){

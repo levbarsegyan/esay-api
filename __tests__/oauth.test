@@ -7,16 +7,21 @@ import express from 'express';
 import loaders from '../loaders';
 import User from '../models/User';
 import { db } from '../loaders/sequelize';
+
 const app = express();
+
 puppeteer.use(StealthPlugin());
 let browser, page;
 const authCodes = { github: null, google: null, };
+
 const launchBrowser = async () => {
     browser = await puppeteer.launch({
+        // headless: false,
         args: [ '--—headless', '--no-sandbox' ],
         ignoreDefaultArgs: [ '--enable-automation' ],
     });
 };
+
 const takeScreenshot = async (provider) => {
     const path = `snapshots/${provider}_${Math.random()}.png`;
     try {
@@ -29,31 +34,39 @@ const takeScreenshot = async (provider) => {
         console.error('error while taking screenshot', e);
     }
 };
+
 const getAuthCode = async (provider) => {
-    const cookies = await fs.readFile(`${provider}.cookie.json`, 'utf8'); 
+    const cookies = await fs.readFile(`${provider}.cookie.json`, 'utf8'); // we are reading from the cookies henceforth
     const deserializedCookies = await JSON.parse(cookies);
+
     page = await browser.newPage();
     await page.setCookie(...deserializedCookies);
+
     await page.setRequestInterception(true);
+
     page.on('load', async () => {
         console.log('page loaded', page.url());
         await takeScreenshot(provider);
     });
+
     page.on('request', async (req) => {
-        if (req.url().startsWith('http:
+        if (req.url().startsWith('http://localhost:8080/')) {
             await req.abort();
+            // eslint-disable-next-line node/no-unsupported-features/node-builtins
             const url = new URL(req.url());
             const code = url.searchParams.get('code');
             authCodes[ provider ] = code;
             console.log('Code for ', provider, code);
+            // await page.close();
             return code;
         } else {
             req.continue();
         }
     });
     await page.goto(
-        `http:
+        `http://localhost:${process.env.PORT}/oauth/redirect/${provider}`
     );
+
     if (provider === 'google') {
         await (await page.waitForSelector('div[role="link"]')).click();
     }
@@ -75,6 +88,7 @@ const signin = (done, provider) => {
             done();
         });
 };
+
 describe('Test OAuths Integration & API', () => {
     beforeAll(async (done) => {
         await loaders({ expressApp: app, });
@@ -82,29 +96,39 @@ describe('Test OAuths Integration & API', () => {
         await launchBrowser();
         done();
     });
+
     afterAll(async (done) => {
         await browser.close();
         await db.drop();
         await db.close();
         done();
     });
+
     it('Should Redirect user to GitHub', async () => {
         try {
             const code = await getAuthCode('github');
             expect(code).toBeDefined();
         } catch (e) {
+            // console.log("Err", e);
+            // await browser.close();
         }
     });
+
     it('Should sign in using Github auth code', (done) => {
         signin(done, 'github');
     }, 10000);
+
     it('Should Redirect user to Google', async () => {
+        // expect.assertions(1);
         try {
             const code = await getAuthCode('google');
             expect(code).toBeDefined();
         } catch (e) {
+            // console.log('Err', e);
+            // await browser.close();
         }
     }, 20000);
+
     it('Should sign in using Google auth code', (done) => {
         signin(done, 'google');
     }, 10000);
