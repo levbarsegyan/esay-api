@@ -2,7 +2,6 @@ import { DEBUG_MODE } from '../config/app.js';
 import Joi from 'joi';
 import AppError from './../utils/appError';
 const errorHandler = (err, req, res, next) => {  
-    console.log(err);
     let statusCode = 500;
     let data = {
         error: 'Internal server error',
