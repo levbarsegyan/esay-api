@@ -78,6 +78,8 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "cross-env": "^7.0.3",
     "eslint": "^7.18.0",
     "husky": "^5.0.6",
