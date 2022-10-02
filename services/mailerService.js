@@ -1,19 +1,6 @@
 import hbs from 'nodemailer-express-handlebars';
 import nodemailer from 'nodemailer';
 import path from 'path';
-const authEmail = process.env.MAILER_EMAIL_ID;
-const authPass = process.env.MAILER_PASSWORD;
-const host = process.env.MAILER_HOST;
-const smtpTransport = nodemailer.createTransport({
-    pool: true,
-    host: host,
-    port: 587,
-    secure: false, 
-    auth: {
-        user: authEmail,
-        pass: authPass,
-    },
-});
 const handlebarsOptions = {
     viewEngine: {
         extName: '.html',
@@ -23,13 +10,26 @@ const handlebarsOptions = {
     viewPath: path.resolve('./templates'),
     extName: '.html',
 };
-smtpTransport.use('compile', hbs(handlebarsOptions));
-const mailer = {
+export default class MailerService {
+    constructor({ env, }){
+        this.env = env;
+        this.smtpTransport = nodemailer.createTransport({
+            pool: true,
+            host: env.MAILER_HOST,
+            port: 587,
+            secure: false, 
+            auth: {
+                user: env.MAILER_EMAIL_ID,
+                pass: env.MAILER_PASSWORD,
+            },
+        });
+        this.smtpTransport.use('compile', hbs(handlebarsOptions));
+    }
     async sendPasswordResetEmail(options){
         let { toMail, origin, token, username, } = options;
         const data = {
             to: toMail,
-            from: authEmail,
+            from: this.env.authEmail,
             template: 'forgot-password-email',
             subject: 'Password help has arrived!',
             context: {
@@ -37,22 +37,27 @@ const mailer = {
                 name: username,
             },
         };
-        const mail = await smtpTransport.sendMail(data);
-        return mail;
-    },
+        const mail = await this.smtpTransport.sendMail(data);
+        if(mail.accepted.length){
+            return true;
+        }
+        return false;
+    }
     async sendPasswordConfirmEmail(options){
         let { toMail, username, } = options;
         const data = {
             to: toMail,
-            from: authEmail,
+            from: this.env.authEmail,
             template: 'reset-password-email',
             subject: 'Password Reset Confirmation',
             context: {
                 name: username,
             },
         };
-        const mail = await smtpTransport.sendMail(data);
-        return mail;
-    },
-};
-export default mailer;
+        const mail = await this.smtpTransport.sendMail(data);
+        if(mail.accepted.length){
+            return true;
+        }
+        return false;
+    }
+}

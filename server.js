@@ -7,16 +7,9 @@ import yamljs from 'yamljs';
 import resolve from 'json-refs';
 import path from 'path';
 import db from './database/connection.js';
-import userRouter from './routes/userApi.js';
+import routes from './api';
 import cors from 'cors';
-import expressPinoLogger from 'express-pino-logger';
-import logger from './services/loggerService.js';
-const loggerMidlleware = expressPinoLogger({
-    logger: logger,
-    useLevel: 'http',
-    autoLogging: true,
-});
-app.use(loggerMidlleware);
+import { errors } from 'celebrate';
 const corsOption = {
     origin: [ ' http:
 };
@@ -50,8 +43,10 @@ const multiFileSwagger = (root) => {
     );
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 })();
-app.use('/api/user', userRouter);
+app.use('/api', routes());
+app.use(errors());
 app.use((err, req, res, next) => {
+    console.log(err);
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
     res.status(err.statusCode).json({
