@@ -14,6 +14,10 @@ const env = {
     MAILER_HOST: process.env.MAILER_HOST,
     NODE_ENV: process.env.NODE_ENV,
     tokensecret: process.env.tokensecret,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    GITHUB_CLIENT: process.env.GITHUB_CLIENT,
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
 };
 const setup = () => {
     container.register({

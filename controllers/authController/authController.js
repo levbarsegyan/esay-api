@@ -4,6 +4,7 @@ export default class AuthController{
     constructor({ AuthService, OAuthService, env, }){
         this.authService = AuthService;
         this.oauthService = OAuthService;
+        this.urls = urls(env);
         this.cookieOptions = {
             httpOnly: true,
             secure: env.NODE_ENV === 'production' ? true : false,
@@ -12,6 +13,8 @@ export default class AuthController{
         this.login = this.login.bind(this);
         this.googleAuth = this.googleAuth.bind(this);
         this.githubAuth = this.githubAuth.bind(this);
+        this.githubAuthRedirect = this.githubAuthRedirect.bind(this);
+        this.googleRedirect = this.googleRedirect.bind(this);
     }
     async register(req, res, next) {
         const isRemember = req.body.remember;
@@ -52,7 +55,7 @@ export default class AuthController{
         }
     }
     githubAuthRedirect (req, res) {
-        return res.redirect(urls.githubAuth.GithubAuthScreenUrl);
+        return res.redirect(this.urls.githubAuth.GithubAuthScreenUrl);
     }
     async githubAuth (req, res, next) {
         try {
@@ -78,11 +81,11 @@ export default class AuthController{
         }
     }
     googleRedirect (req, res) {
-        return res.redirect(urls.googleAuth.googleAuthScreenUrl);
+        return res.redirect(this.urls.googleAuth.googleAuthScreenUrl);
     }
     async googleAuth (req, res, next) {
         try {
-            const code = req.query.code;
+            const code = req.body.code;
             const isRemember = true;
             const userData = await this.oauthService.GoogleAuth(code);
             const token = await this.authService.Signup(userData);
