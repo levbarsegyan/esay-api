@@ -19,18 +19,16 @@ const env = {
     GITHUB_CLIENT: process.env.GITHUB_CLIENT,
     GITHUB_TOKEN: process.env.GITHUB_TOKEN,
 };
-const setup = () => {
-    container.register({
-        AuthController: asClass(AuthController),
-        PasswordController: asClass(PasswordController),
-        AuthService: asClass(AuthService),
-        MailerService: asClass(MailerService),
-        OAuthService: asClass(OAuthService),
-        UserModel: asValue(UserModel),
-        env: asValue(env),
-    });
-};
+container.register({
+    AuthController: asClass(AuthController),
+    PasswordController: asClass(PasswordController),
+    AuthService: asClass(AuthService),
+    MailerService: asClass(MailerService),
+    OAuthService: asClass(OAuthService),
+    UserModel: asValue(UserModel),
+    env: asValue(env),
+});
+console.log('[MODULE] Awilix Initialized.');
 export {
-    container,
-    setup
+    container
 };

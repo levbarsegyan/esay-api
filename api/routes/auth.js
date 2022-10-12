@@ -1,6 +1,4 @@
-import { container, setup } from '../../loaders/awilix';
-setup();
-console.log('[MODULE] Awilix Initialized.');
+import { container } from '../../loaders/awilix';
 import { Router } from 'express';
 import * as schemaValidator from '../middlewares/schemaValidator';
 const authController = container.resolve('AuthController');
