@@ -18,20 +18,24 @@ export default class AuthController{
     }
     async register(req, res, next) {
         const isRemember = req.body.remember;
-        const token = await this.authService.Signup(req.body);
-        if(isRemember){
-            this.cookieOptions.maxAge = FOURTEEN_DAYS_IN_MILLISECONDS;
-        } else{
-            this.cookieOptions.maxAge = 0;
+        try {
+            const token = await this.authService.Signup(req.body);
+            if(isRemember){
+                this.cookieOptions.maxAge = FOURTEEN_DAYS_IN_MILLISECONDS;
+            } else{
+                this.cookieOptions.maxAge = 0;
+            }
+            res.cookie('token', token, this.cookieOptions);
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
+            const message = 'Registered successfuly!';
+            return res.status(200).json({
+                success: true,
+                message,
+                token,
+            });
+        } catch (error) {
+            next(error);
         }
-        res.cookie('token', token, this.cookieOptions);
-        res.setHeader('Access-Control-Allow-Credentials', 'true');
-        const message = 'Registered successfuly!';
-        return res.status(200).json({
-            success: true,
-            message,
-            token,
-        });
     }
     async login (req, res, next) {
         try {

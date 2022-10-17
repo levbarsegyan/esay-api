@@ -1,43 +1,46 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import Sequelize from 'sequelize';
 import AppError from '../utils/appError';
-const Op = Sequelize.Op;
 const TWELVE_HOUR_IN_MILLISECONDS = 12 * 60 * 60 * 1000;
-const oldDateObj = new Date();
-const newDateObj = new Date();
-const expiryTime = newDateObj.setTime(oldDateObj.getTime() + TWELVE_HOUR_IN_MILLISECONDS);
+Date.prototype.expiryTime = function() {
+    this.setTime(this.getTime() + (TWELVE_HOUR_IN_MILLISECONDS));
+    return this;
+};
 export default class AuthService {
-    constructor({ UserModel, env, }) {
-        this.userModel = UserModel;
+    constructor({ prisma, env, }) {
+        this.prisma = prisma;
         this.env = env;
     }
     async Signup(userData) {
         let { fullname, email, password, userid, provider, } = userData;
         email = email.trim();
-        const user = await this.userModel.findAll({ where: { email, }, });
+        const user = await this.prisma.user.findMany({ where: { email, }, });
         if (user.length) {
             if (provider) {
                 return this.generateJWTToken(email);
             } else {
-                throw (new AppError('User already exists', 409));
+                throw (new AppError('User already exists with this email!', 409));
             }
         } else {
             try {
                 if(provider){
-                    await this.userModel.create({
-                        fullname,
-                        email,
-                        userid,
-                        provider,
+                    await this.prisma.user.create({
+                        data: {
+                            fullname,
+                            email,
+                            userid,
+                            provider,
+                        },
                     });
                 } else {
                     const hashedPassword = await bcrypt.hash(password, 10);
-                    await this.userModel.create({
-                        fullname,
-                        email,
-                        password: hashedPassword,
+                    await this.prisma.user.create({
+                        data: {
+                            fullname,
+                            email,
+                            password: hashedPassword,
+                        },
                     });
                 }
                 return this.generateJWTToken(email);
@@ -48,9 +51,9 @@ export default class AuthService {
     }
     async Signin(userData) {
         const { email, password, } = userData;
-        const user = await this.userModel.findAll({ where: { email, }, });
-        if (user.length > 0) {
-            const encryptPass = user[ 0 ].dataValues.password;
+        const user = await this.prisma.user.findUnique({ where: { email, }, });
+        if (user) {
+            const encryptPass = user.password;
             const isPasswordMatch = await bcrypt.compare(password, encryptPass);
             if (isPasswordMatch) {
                 return this.generateJWTToken(email);
@@ -62,42 +65,53 @@ export default class AuthService {
         }
     }
     async ForgotPassword(email){
-        const user = await this.userModel.findOne({ where: { email: email, }, });
-        if(!user){
-            throw (new AppError('No user exists with this email-address', 404));
-        }
         try {
             const token = this.generateRandomToken();
-            await this.userModel.update({ reset_password_token: token, reset_password_expires: expiryTime, }, {
-                where: {
-                    email: email,
-                },
+            const user = await this.prisma.user.update({ where: { email: email, },
+                data: { resetPasswordToken: token,
+                    resetPasswordExpires: new Date().expiryTime(), },
             });
             return { user, token, };
         } catch (error) {
+            if(error.code == 'P2025'){
+                throw (new AppError('User not found!', 404));
+            }
             throw (new AppError('Something went wrong!', 500));
         }
     }
     async ResetPassword(data){
-        const user = await this.userModel.findOne({
-            where: {
-                reset_password_token: data.token,
-                reset_password_expires: {
-                    [ Op.gt ]: new Date(),
-                },
-            },
-        });
-        if(!user){
-            throw (new AppError('Password reset token is invalid or has expired.', 401));
-        }
-        let values = {
-            password: bcrypt.hashSync(data.newPassword, 10),
-            reset_password_token: null,
-            reset_password_expires: null,
-        };
         try {
-            return await user.update(values);
+            let user = await this.prisma.user.findMany({
+                where: {
+                    AND: [
+                        {
+                            resetPasswordToken: {
+                                equals: data.token,
+                            },
+                        },
+                        { 
+                            resetPasswordExpires: {
+                                gt: new Date(),
+                            },
+                        }
+                    ],
+                },
+            });
+            if(user.length == 0){
+                throw (new AppError('Password reset token is invalid or has expired.', 401));
+            }
+            user = await this.prisma.user.update({ where: { email: user[ 0 ].email, },
+                data: {
+                    password: bcrypt.hashSync(data.newPassword, 10),
+                    resetPasswordToken: null,
+                    resetPasswordExpires: null,
+                },
+            });
+            return user;
         } catch (error) {
+            if(error.statusCode == 401){
+                throw error;
+            }
             throw (new AppError('Something went wrong', 500));
         }
     }

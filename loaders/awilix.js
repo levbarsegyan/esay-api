@@ -4,7 +4,7 @@ import PasswordController from '../controllers/authController/passwordController
 import AuthService from '../services/authService';
 import MailerService from '../services/mailerService';
 import OAuthService from '../services/oauthService';
-import UserModel from '../models/User';
+import prisma from '../prisma';
 const container = createContainer({
     injectionMode: InjectionMode.PROXY,
 });
@@ -25,7 +25,7 @@ container.register({
     AuthService: asClass(AuthService),
     MailerService: asClass(MailerService),
     OAuthService: asClass(OAuthService),
-    UserModel: asValue(UserModel),
+    prisma: asValue(prisma),
     env: asValue(env),
 });
 console.log('[MODULE] Awilix Initialized.');

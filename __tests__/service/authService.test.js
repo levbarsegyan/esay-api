@@ -1,6 +1,5 @@
 require('esm')(module);
-import User from '../../models/User';
-import { db } from '../../loaders/sequelize';
+import prisma from '../../prisma';
 import AuthService from '../../services/authService';
 const env = {
     NODE_ENV: 'test',
@@ -8,24 +7,24 @@ const env = {
 };
 let reset_password_token = '';
 describe('Auth Service Tests', function () {
-    beforeAll(async (done) => {
-        await User.sync();
-        done();
-    });
     afterAll(async (done) => {
-        await db.drop();
+        await prisma.user.delete({
+            where: {
+                email: 'realdev_test@mail.com',
+            },
+        });
         done();
     });
     it('should register user', async (done) => {
         const body = {
             fullname: 'Jhon Doe',
-            email: 'myemail@gmail.com',
+            email: 'realdev_test@mail.com',
             password: 'abcd12345',
             confirmpassword: 'abcd12345',
             remember: true,
         };
         const data = {
-            UserModel: User,
+            prisma: prisma,
             env: env,
         };
         const authService = new AuthService(data);
@@ -35,12 +34,12 @@ describe('Auth Service Tests', function () {
     });
     it('should login user', async (done) => {
         const body = {
-            email: 'myemail@gmail.com',
+            email: 'realdev_test@mail.com',
             password: 'abcd12345',
             remember: true,
         };
         const data = {
-            UserModel: User,
+            prisma: prisma,
             env: env,
         };
         const authService = new AuthService(data);
@@ -49,9 +48,9 @@ describe('Auth Service Tests', function () {
         done();
     });
     it('should return user, token by email in forgot password', async (done) => {
-        const email = 'myemail@gmail.com';
+        const email = 'realdev_test@mail.com';
         const data = {
-            UserModel: User,
+            prisma: prisma,
             env: env,
         };
         const authService = new AuthService(data);
@@ -68,7 +67,7 @@ describe('Auth Service Tests', function () {
             remember: true,
         };
         const data = {
-            UserModel: User,
+            prisma: prisma,
             env: env,
         };
         const authService = new AuthService(data);
@@ -78,12 +77,12 @@ describe('Auth Service Tests', function () {
     });
     it('should login user with new password', async (done) => {
         const body = {
-            email: 'myemail@gmail.com',
+            email: 'realdev_test@mail.com',
             password: 'newpassword',
             remember: true,
         };
         const data = {
-            UserModel: User,
+            prisma: prisma,
             env: env,
         };
         const authService = new AuthService(data);

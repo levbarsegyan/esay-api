@@ -1,16 +1,6 @@
 require('esm')(module);
-import User from '../../models/User';
-import { db } from '../../loaders/sequelize';
 import OAuthService from '../../services/oauthService';
 describe('OAuth Service Tests', function () {
-    beforeAll(async (done) => {
-        await User.sync();
-        done();
-    });
-    afterAll(async (done) => {
-        await db.drop();
-        done();
-    });
     it('should register user using GitHubAuth', async (done) => {
         const env = {
             GOOGLE_CLIENT_ID: 'GOOGLE_CLIENT_ID',

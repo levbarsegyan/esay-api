@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model SequelizeMeta {
+  name String @id @db.VarChar(255)
+}
+
+model Project {
+  id                  Int       @id @default(autoincrement())
+  projectName         String    @db.VarChar(128)
+  plannedStartDate    DateTime  @db.Timestamptz(6)
+  plannedEndDate      DateTime  @db.Timestamptz(6)
+  actualStartDate     DateTime? @db.Timestamptz(6)
+  actualEndDate       DateTime? @db.Timestamptz(6)
+  projectDescription  String?   @db.VarChar(255)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  task                Task[]
+
+  @@map("Projects")
+}
+
+model Task {
+  id          String    @id @db.Uuid
+  taskId      Int       @default(autoincrement())
+  type        String?   @db.VarChar(50)
+  title       String    @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  assignee    String?   @db.VarChar(128)
+  createdBy   String    @db.VarChar(128)
+  priority    String    @db.VarChar(20)
+  status      String    @db.VarChar(20)
+  inProject   Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  project     Project? @relation(fields: [inProject], references: [id])
+  
+  @@map("Tasks")
+}
+
+model User {
+  id                     Int       @id @default(autoincrement())
+  fullname               String    @db.VarChar(255)
+  email                  String    @db.VarChar(255) @unique
+  password               String?   @db.VarChar(255)
+  userid                 String?   @db.VarChar(255)
+  provider               String?   @default("easy collab") @db.VarChar(255)
+  resetPasswordToken     String?   @db.VarChar(255) @unique
+  resetPasswordExpires   DateTime? @db.Timestamptz(6)
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@map("Users")
+}

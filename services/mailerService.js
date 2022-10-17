@@ -24,12 +24,14 @@ export default class MailerService {
             },
         });
         this.smtpTransport.use('compile', hbs(handlebarsOptions));
+        this.sendPasswordConfirmEmail = this.sendPasswordConfirmEmail.bind(this);
+        this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this);
     }
     async sendPasswordResetEmail(options){
         let { toMail, origin, token, username, } = options;
         const data = {
             to: toMail,
-            from: this.env.authEmail,
+            from: this.env.MAILER_EMAIL_ID,
             template: 'forgot-password-email',
             subject: 'Password help has arrived!',
             context: {
@@ -47,7 +49,7 @@ export default class MailerService {
         let { toMail, username, } = options;
         const data = {
             to: toMail,
-            from: this.env.authEmail,
+            from: this.env.MAILER_EMAIL_ID,
             template: 'reset-password-email',
             subject: 'Password Reset Confirmation',
             context: {
