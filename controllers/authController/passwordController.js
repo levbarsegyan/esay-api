@@ -1,4 +1,5 @@
 import AppError from './../../utils/appError.js';
+import ERRORS from '../../constants/errors';
 export default class PasswordController {
     constructor({ AuthService, MailerService, }){
         this.authService = AuthService;
@@ -24,7 +25,7 @@ export default class PasswordController {
                         message: 'Kindly check your email for further instructions', 
                     });
                 } else {
-                    return next(new AppError('There was an error sending mail. Please try again later', 500));
+                    return next(new AppError(ERRORS.EMAIL_ERROR, 500));
                 }
             } catch (error) {
                 next(error);
@@ -47,7 +48,7 @@ export default class PasswordController {
                     message: 'Password Reset Successfully!',
                 });
             } else {
-                return next(new AppError('There was an error sending mail. Please try again later', 500));
+                return next(new AppError(ERRORS.EMAIL_ERROR, 500));
             }
         } catch (error) {
             return next(error);

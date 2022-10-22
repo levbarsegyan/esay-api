@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import AppError from '../utils/appError';
+import ERRORS from '../constants/errors';
 const TWELVE_HOUR_IN_MILLISECONDS = 12 * 60 * 60 * 1000;
 Date.prototype.expiryTime = function() {
     this.setTime(this.getTime() + (TWELVE_HOUR_IN_MILLISECONDS));
@@ -20,7 +21,7 @@ export default class AuthService {
             if (provider) {
                 return this.generateJWTToken(email);
             } else {
-                throw (new AppError('User already exists with this email!', 409));
+                throw (new AppError(ERRORS.USER_EXISTS, 409));
             }
         } else {
             try {
@@ -45,7 +46,7 @@ export default class AuthService {
                 }
                 return this.generateJWTToken(email);
             } catch (error) {
-                throw (new AppError('Something went wrong', 500));
+                throw (new AppError(ERRORS.INTERNAL_ERROR, 500));
             }
         }
     }
@@ -58,10 +59,10 @@ export default class AuthService {
             if (isPasswordMatch) {
                 return this.generateJWTToken(email);
             } else {
-                throw (new AppError('Incorrect E-mail or password', 401));
+                throw (new AppError(ERRORS.INVALID_CREDENTIALS, 401));
             }
         } else {
-            throw (new AppError('User does not exists', 404));
+            throw (new AppError(ERRORS.USER_NOT_FOUND, 404));
         }
     }
     async ForgotPassword(email){
@@ -74,9 +75,9 @@ export default class AuthService {
             return { user, token, };
         } catch (error) {
             if(error.code == 'P2025'){
-                throw (new AppError('User not found!', 404));
+                throw (new AppError(ERRORS.USER_NOT_FOUND, 404));
             }
-            throw (new AppError('Something went wrong!', 500));
+            throw (new AppError(ERRORS.INTERNAL_ERROR, 500));
         }
     }
     async ResetPassword(data){
@@ -98,7 +99,7 @@ export default class AuthService {
                 },
             });
             if(user.length == 0){
-                throw (new AppError('Password reset token is invalid or has expired.', 401));
+                throw (new AppError(ERRORS.RESET_TOKEN_ERROR, 401));
             }
             user = await this.prisma.user.update({ where: { email: user[ 0 ].email, },
                 data: {
@@ -112,7 +113,7 @@ export default class AuthService {
             if(error.statusCode == 401){
                 throw error;
             }
-            throw (new AppError('Something went wrong', 500));
+            throw (new AppError(ERRORS.INTERNAL_ERROR, 500));
         }
     }
     generateRandomToken() {
