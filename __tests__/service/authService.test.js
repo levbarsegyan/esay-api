@@ -1,6 +1,7 @@
 require('esm')(module);
 import prisma from '../../prisma';
 import AuthService from '../../services/authService';
+const random_email = `test_${Math.floor(Math.random() * 1000)}@realdev.in`;
 const env = {
     NODE_ENV: 'test',
     tokensecret: 'some_secret',
@@ -10,7 +11,7 @@ describe('Auth Service Tests', function () {
     afterAll(async (done) => {
         await prisma.user.delete({
             where: {
-                email: 'realdev_test@mail.com',
+                email: random_email,
             },
         });
         done();
@@ -18,7 +19,7 @@ describe('Auth Service Tests', function () {
     it('should register user', async (done) => {
         const body = {
             fullname: 'Jhon Doe',
-            email: 'realdev_test@mail.com',
+            email: random_email,
             password: 'abcd12345',
             confirmpassword: 'abcd12345',
             remember: true,
@@ -34,7 +35,7 @@ describe('Auth Service Tests', function () {
     });
     it('should login user', async (done) => {
         const body = {
-            email: 'realdev_test@mail.com',
+            email: random_email,
             password: 'abcd12345',
             remember: true,
         };
@@ -48,7 +49,7 @@ describe('Auth Service Tests', function () {
         done();
     });
     it('should return user, token by email in forgot password', async (done) => {
-        const email = 'realdev_test@mail.com';
+        const email = random_email;
         const data = {
             prisma: prisma,
             env: env,
@@ -77,7 +78,7 @@ describe('Auth Service Tests', function () {
     });
     it('should login user with new password', async (done) => {
         const body = {
-            email: 'realdev_test@mail.com',
+            email: random_email,
             password: 'newpassword',
             remember: true,
         };
